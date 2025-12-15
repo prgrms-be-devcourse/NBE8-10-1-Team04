@@ -12,18 +12,46 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-@Component
-@Profile("dev")
+  
+import com.back.domain.product.dto.ProductCreateReq;
+import com.back.domain.product.entity.Product;
+import com.back.domain.product.service.ProductService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.transaction.annotation.Transactional;
+
 @RequiredArgsConstructor
+@Configuration
 public class BaseInitData {
-    private final ProductRepository productRepository;
-    private final OrderRepository orderRepository;
-
+    @Autowired
+    @Lazy
     private BaseInitData self;
+    private final ProductService productService;
+     private final OrderRepository orderRepository;
 
+    @Bean
+    ApplicationRunner baseInitDataApplicationRunner() {
+        return args -> {
+            self.work1();
+            self.work2();
+        };
+    }
+
+    @Transactional
+    public void work1() {
+        if (productService.count() > 0) return;
+        ProductCreateReq productCreateReq1 = new ProductCreateReq("갤럭시", 1000, "삼성껍니다.");
+        productService.create(productCreateReq1);
+        ProductCreateReq productCreateReq2 = new ProductCreateReq("아이폰", 5000, "애플껍니다.");
+        productService.create(productCreateReq2);
+    }
     @PostConstruct
     @Transactional
-    public void init() {
+    public void work2() {
 
         if (productRepository.count() > 0) {
             return; // 이미 데이터 있으면 다시 안 넣음
@@ -35,5 +63,4 @@ public class BaseInitData {
         orderRepository.save(order1);
         orderRepository.save(order2);
         orderRepository.save(order3);
-    }
 }
