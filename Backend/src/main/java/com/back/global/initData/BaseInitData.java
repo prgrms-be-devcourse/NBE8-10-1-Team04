@@ -1,5 +1,6 @@
 package com.back.global.initData;
 
+import com.back.domain.product.dto.ProductCreateReq;
 import com.back.domain.product.entity.Product;
 import com.back.domain.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +29,9 @@ public class BaseInitData {
     @Transactional
     public void work1() {
         if (productService.count() > 0) return;
-
-        Product product1 = productService.add("갤럭시", 1000);
-        Product product2 = productService.add("아이폰", 5000);
+        ProductCreateReq productCreateReq1 = new ProductCreateReq("갤럭시", 1000, "삼성껍니다.");
+        productService.create(productCreateReq1);
+        ProductCreateReq productCreateReq2 = new ProductCreateReq("아이폰", 5000, "애플껍니다.");
+        productService.create(productCreateReq2);
     }
 }

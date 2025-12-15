@@ -32,7 +32,6 @@ public class Product extends BaseEntity {
                 .name(name)
                 .price(price)
                 .description(description)
-
                 .build();
     }
 }
