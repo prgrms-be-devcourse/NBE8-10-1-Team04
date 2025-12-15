@@ -5,11 +5,11 @@ import com.back.domain.product.entity.Product;
 import java.time.LocalDateTime;
 
 public record ProductDto(
-    int id,
-    LocalDateTime createDate,
-    LocalDateTime modifyDate,
-    String name,
-    int price
+        int id,
+        LocalDateTime createDate,
+        LocalDateTime modifyDate,
+        String name,
+        int price
 ) {
     public ProductDto(Product product) {
         this(
