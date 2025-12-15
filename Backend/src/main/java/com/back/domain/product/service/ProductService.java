@@ -14,6 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProductService {
     private final ProductRepository productRepository;
 
+    public long count() {
+        return productRepository.count();
+    }
+
+    public List<Product> findAll() {
+        return productRepository.findAll();
+    }
+
     @Transactional
     public ProductRes create(ProductCreateReq req) {
         if(productRepository.existsByName(req.getName())) {
