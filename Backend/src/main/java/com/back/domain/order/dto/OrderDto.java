@@ -5,13 +5,14 @@ import lombok.Getter;
 import org.aspectj.weaver.ast.Or;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record OrderDto (
     String address,
     String zipCode,
     String email,
-    int quantity,
-    int price,
+    int totalQuantity,
+    int totalPrice,
     LocalDateTime modifyDate,
     LocalDateTime createDate
     ){
@@ -20,11 +21,10 @@ public record OrderDto (
                 order.getAddress(),
                 order.getZipCode(),
                 order.getEmail(),
-                order.getQuantity(),
-                order.getPrice(),
+                order.getTotalQuantity(),
+                order.getTotalPrice(),
                 order.getModifyDate(),
                 order.getCreateDate()
         );
-
     }
 }
