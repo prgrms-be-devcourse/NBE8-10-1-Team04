@@ -3,6 +3,7 @@ package com.back.domain.order.controller;
 
 import com.back.domain.order.dto.OrderCreateRequest;
 import com.back.domain.order.dto.OrderDto;
+import com.back.domain.order.dto.OrderGroupDto;
 import com.back.domain.order.dto.OrderResponse;
 import com.back.domain.order.dto.OrderUpdateRequest;
 import com.back.domain.order.entity.Order;
@@ -18,9 +19,18 @@ import java.util.List;
 public class OrderController {
     private final OrderService orderService;
 
+    // 기본 다건 조회 (주소 & 배송일자)
     @GetMapping("/orders")
-    public List<OrderDto> findAllOrders(){
-        return orderService.findAllOrder()
+    public List<OrderGroupDto> findAllOrders(){
+        return orderService.getGroupedOrders();
+    }
+
+    // 이메일 다건 조회 (http://localhost:8080/api/v1/orders/test@test.com)
+    @GetMapping("/orders/{email}")
+    public List<OrderDto> findOrdersByEmail(
+            @PathVariable String email
+    ) {
+        return orderService.findOrdersByEmail(email)
                 .stream()
                 .map(OrderDto::from)
                 .toList();
@@ -49,4 +59,5 @@ public class OrderController {
         Order order = orderService.updateOrder(id, email, request);
         return new OrderResponse(order);
     }
+
 }

@@ -24,6 +24,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,9 +67,9 @@ public class BaseInitData {
         productRepository.save(product1);
         productRepository.save(product2);
 
-        Order order1 = new Order("서울시 강남구", "12345", "user1@test.com");
-        Order order2 = new Order("서울시 서초구", "54321", "user2@test.com");
-        Order order3 = new Order("서울시 송파구", "67890", "user3@test.com");
+        Order order1 = new Order("서울시 강남구", "12345", "user1@test.com", LocalDate.now());
+        Order order2 = new Order("서울시 서초구", "54321", "user2@test.com", LocalDate.now());
+        Order order3 = new Order("서울시 송파구", "67890", "user3@test.com", LocalDate.now());
 
 
         order1.addOrderProduct(new OrderProduct(product1, product1.getPrice(), 2));
