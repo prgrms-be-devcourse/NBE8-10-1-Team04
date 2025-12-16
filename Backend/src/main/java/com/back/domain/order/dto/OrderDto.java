@@ -9,18 +9,20 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record OrderDto (
-    String address,
-    String zipCode,
-    String email,
-    int totalQuantity,
-    int totalPrice,
-    LocalDateTime modifyDate,
-    LocalDateTime createDate,
-    LocalDate deliveryDate,
-    String deliveryStatus
+        int orderId,
+        String address,
+        String zipCode,
+        String email,
+        int totalQuantity,
+        int totalPrice,
+        LocalDateTime modifyDate,
+        LocalDateTime createDate,
+        LocalDate deliveryDate,
+        String deliveryStatus
     ){
     public static OrderDto from (Order order) {
         return new OrderDto(
+                order.getId(),
                 order.getAddress(),
                 order.getZipCode(),
                 order.getEmail(),
