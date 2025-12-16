@@ -47,5 +47,26 @@ public class ApiV1ProductController {
                 new ProductDto(product)
         );
     }
+    @DeleteMapping("product/{id}")
+    @Transactional
+    public RsData<Void> delete(@PathVariable int id) {
+        Product product = productService.findById(id).get();
 
+        productService.delete(product);
+
+        return new RsData<>(
+                "200-1",
+                "%s 상품이 삭제되었습니다.".formatted(product.getName())
+        );
+    }
+    @PutMapping("product/{id}")
+    @Transactional
+    public RsData<Void> modify(@PathVariable int id,ProductCreateReq req){
+        Product product = productService.findById(id).get();
+        productService.modify(product, req.name, req.price, req.description);
+        return new RsData<>(
+                "200-1",
+                "%s 상품이 수정되었습니다.".formatted(product.getName())
+        );
+    }
 }
