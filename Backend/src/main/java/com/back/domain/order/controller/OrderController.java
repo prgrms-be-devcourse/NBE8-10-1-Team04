@@ -21,6 +21,17 @@ public class OrderController {
         return orderService.getGroupedOrders();
     }
 
+    // 이메일 다건 조회 (http://localhost:8080/api/v1/orders/test@test.com)
+    @GetMapping("/orders/{email}")
+    public List<OrderDto> findOrdersByEmail(
+            @PathVariable String email
+    ) {
+        return orderService.findOrdersByEmail(email)
+                .stream()
+                .map(OrderDto::from)
+                .toList();
+    }
+  
     // orderId로 단건 조회
     @GetMapping("/order/{id}")
     public OrderResponse getOrder(@PathVariable("id") int id) {

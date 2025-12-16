@@ -76,6 +76,12 @@ public class OrderService {
         return orderRepository.findById(orderId);
     }
 
+
+    // 이메일 조회
+    public List<Order> findOrdersByEmail(String email) {
+        return orderRepository.findAllByEmail(email);
+    }
+
     // 주소 & 배송일자 별 조회
     public List<OrderGroupDto> getGroupedOrders() {
         List<Order> orders = orderRepository.findAll();
