@@ -19,7 +19,7 @@ public record OrderDto (
         LocalDateTime createDate,
         LocalDate deliveryDate,
         String deliveryStatus
-){
+    ){
     public static OrderDto from (Order order) {
         return new OrderDto(
                 order.getId(),
