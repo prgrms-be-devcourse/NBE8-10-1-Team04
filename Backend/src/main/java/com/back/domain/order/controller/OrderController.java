@@ -1,11 +1,7 @@
 package com.back.domain.order.controller;
 
 
-import com.back.domain.order.dto.OrderCreateRequest;
-import com.back.domain.order.dto.OrderDto;
-import com.back.domain.order.dto.OrderGroupDto;
-import com.back.domain.order.dto.OrderResponse;
-import com.back.domain.order.dto.OrderUpdateRequest;
+import com.back.domain.order.dto.*;
 import com.back.domain.order.entity.Order;
 import com.back.domain.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +21,7 @@ public class OrderController {
         return orderService.getGroupedOrders();
     }
 
+    // orderId로 단건 조회
     @GetMapping("/order/{id}")
     public OrderResponse getOrder(@PathVariable("id") int id) {
         Order order = orderService.findOrder(id).get();
@@ -38,7 +35,6 @@ public class OrderController {
         orderService.createOrder(createRequest);
     }
 
-
     @PutMapping("/order/{id}")
     public OrderResponse modifyOrder(
             @PathVariable int id,
@@ -47,5 +43,14 @@ public class OrderController {
     ) {
         Order order = orderService.updateOrder(id, email, request);
         return new OrderResponse(order);
+    }
+
+    // 배송상태 변경
+    @PutMapping("/orders/status")
+    public void modfyDeliverStatus(@RequestBody UpdateStatusRequest request) {
+        orderService.updateOrdersDeliveryStatus(
+                request.getOrderIds(),
+                request.getDeliveryStatus()
+        );
     }
 }

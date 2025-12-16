@@ -97,4 +97,13 @@ public class OrderService {
                 })
                 .toList();
     }
+
+    public void updateOrdersDeliveryStatus(List<Integer> orderIds, String status) {
+        orderIds.forEach(orderId -> {
+            Order order = orderRepository.findById(orderId)
+                    .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+            order.setDeliveryStatus(status);
+            orderRepository.save(order);
+        });
+    }
 }
