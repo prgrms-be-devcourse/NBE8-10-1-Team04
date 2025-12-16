@@ -61,7 +61,7 @@ public class ApiV1ProductController {
     }
     @PutMapping("product/{id}")
     @Transactional
-    public RsData<Void> modify(@PathVariable int id,ProductCreateReq req){
+    public RsData<Void> modify(@PathVariable int id,@RequestBody @Valid ProductCreateReq req){
         Product product = productService.findById(id).get();
         productService.modify(product, req.name, req.price, req.description);
         return new RsData<>(
