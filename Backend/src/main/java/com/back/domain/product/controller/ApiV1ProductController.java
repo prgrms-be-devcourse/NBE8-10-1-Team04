@@ -47,5 +47,19 @@ public class ApiV1ProductController {
                 new ProductDto(product)
         );
     }
+    @DeleteMapping("product/{id}")
+    @Transactional
+    public Void delete(@PathVariable int id) {
+        Product product = productService.findById(id).get();
 
+        productService.delete(product);
+        return null; //Todo : rsData 추가해야함 현재는 리턴값이 없어서 그냥 삭제됨
+    }
+    @PutMapping("product/{id}")
+    @Transactional
+    public Void modify(@PathVariable int id,String name,int price,String description){
+        Product product = productService.findById(id).get();
+        productService.modify(product, name, price, description);
+        return null; //Todo : rsData 추가, req사용하게 변경
+    }
 }
