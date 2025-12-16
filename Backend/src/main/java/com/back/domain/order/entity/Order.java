@@ -48,4 +48,13 @@ public class Order extends BaseEntity {
                 .mapToInt(OrderProduct::getQuantity)
                 .sum();
     }
+
+    public void modify(String address, String zipCode){
+        this.address = address;
+        this.zipCode = zipCode;
+    }
+
+    public void clearOrderProducts(){
+        orderProducts.clear();
+    }
 }
