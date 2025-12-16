@@ -49,17 +49,24 @@ public class ApiV1ProductController {
     }
     @DeleteMapping("product/{id}")
     @Transactional
-    public Void delete(@PathVariable int id) {
+    public RsData<Void> delete(@PathVariable int id) {
         Product product = productService.findById(id).get();
 
         productService.delete(product);
-        return null; //Todo : rsData 추가해야함 현재는 리턴값이 없어서 그냥 삭제됨
+
+        return new RsData<>(
+                "200-1",
+                "%s 상품이 삭제되었습니다.".formatted(product.getName())
+        );
     }
     @PutMapping("product/{id}")
     @Transactional
-    public Void modify(@PathVariable int id,String name,int price,String description){
+    public RsData<Void> modify(@PathVariable int id,ProductCreateReq req){
         Product product = productService.findById(id).get();
-        productService.modify(product, name, price, description);
-        return null; //Todo : rsData 추가, req사용하게 변경
+        productService.modify(product, req.name, req.price, req.description);
+        return new RsData<>(
+                "200-1",
+                "%s 상품이 수정되었습니다.".formatted(product.getName())
+        );
     }
 }
