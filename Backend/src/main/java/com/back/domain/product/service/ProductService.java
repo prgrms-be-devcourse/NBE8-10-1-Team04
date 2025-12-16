@@ -1,7 +1,5 @@
 package com.back.domain.product.service;
 
-import com.back.domain.product.dto.ProductCreateReq;
-import com.back.domain.product.dto.ProductRes;
 import com.back.domain.product.entity.Product;
 import com.back.domain.product.repository.ProductRepository;
 import jakarta.persistence.EntityExistsException;
@@ -25,15 +23,13 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductRes create(ProductCreateReq req) {
-        if(productRepository.existsByName(req.getName())) {
+    public Product create(String name, int price, String description) {
+        if(productRepository.existsByName(name)) {
             throw new EntityExistsException();
         }
 
-        Product product = productRepository.save(
-                Product.create(req.getName(), req.getPrice(), req.getDescription())
+        return productRepository.save(
+                Product.create(name, price, description)
         );
-
-        return ProductRes.from(product);
     }
 }
