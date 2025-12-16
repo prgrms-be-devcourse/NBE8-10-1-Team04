@@ -1,7 +1,5 @@
 package com.back.domain.product.service;
 
-import com.back.domain.product.dto.ProductCreateReq;
-import com.back.domain.product.dto.ProductRes;
 import com.back.domain.product.entity.Product;
 import com.back.domain.product.repository.ProductRepository;
 import jakarta.persistence.EntityExistsException;
@@ -10,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,16 +23,24 @@ public class ProductService {
         return productRepository.findAll();
     }
 
+    public Optional<Product> findById(int id) {
+        return productRepository.findById(id);
+    }
+    public void modify(Product product, String name, int price,String description) {
+        product.modify(name, price, description);
+    }
+    public void delete(Product product) {
+        productRepository.delete(product);
+    }
+
     @Transactional
-    public ProductRes create(ProductCreateReq req) {
-        if(productRepository.existsByName(req.getName())) {
+    public Product create(String name, int price, String description) {
+        if(productRepository.existsByName(name)) {
             throw new EntityExistsException();
         }
 
-        Product product = productRepository.save(
-                Product.create(req.getName(), req.getPrice(), req.getDescription())
+        return productRepository.save(
+                Product.create(name, price, description)
         );
-
-        return ProductRes.from(product);
     }
 }

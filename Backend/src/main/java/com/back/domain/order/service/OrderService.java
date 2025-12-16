@@ -13,6 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Dictionary;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +31,11 @@ public class OrderService {
     }
 
     public void createOrder(OrderCreateRequest request) {
-        Order order = new Order(request.getAddress(), request.getZipCode(), request.getEmail());
+        LocalDate date = LocalDate.now();
+        if(LocalDateTime.now().getHour() >= 14) {
+            date = LocalDate.now().plusDays(1);
+        }
+        Order order = new Order(request.getAddress(), request.getZipCode(), request.getEmail(), date);
 
         for(OrderProductDto dto : request.getProducts()) {
             Product product = productRepository.findById(dto.getProductId())
@@ -41,8 +48,7 @@ public class OrderService {
 
         orderRepository.save(order);
     }
-
-    @Transactional
+  
     public Order updateOrder(int id, String email, OrderUpdateRequest request) {
 
         Order order = orderRepository.findByIdAndEmail(id, email)

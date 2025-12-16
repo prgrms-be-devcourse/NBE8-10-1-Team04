@@ -10,20 +10,14 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
 
 
-import com.back.domain.product.dto.ProductCreateReq;
-import com.back.domain.product.entity.Product;
 import com.back.domain.product.service.ProductService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationRunner;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,10 +42,8 @@ public class BaseInitData {
     @Transactional
     public void work1() {
         if (productService.count() > 0) return;
-        ProductCreateReq productCreateReq1 = new ProductCreateReq("갤럭시", 1000, "삼성껍니다.");
-        productService.create(productCreateReq1);
-        ProductCreateReq productCreateReq2 = new ProductCreateReq("아이폰", 5000, "애플껍니다.");
-        productService.create(productCreateReq2);
+        productService.create("갤럭시", 1000, "삼성껍니다.");
+        productService.create("아이폰", 5000, "애플껍니다.");
     }
     @PostConstruct
     @Transactional
@@ -66,9 +58,9 @@ public class BaseInitData {
         productRepository.save(product1);
         productRepository.save(product2);
 
-        Order order1 = new Order("서울시 강남구", "12345", "user1@test.com");
-        Order order2 = new Order("서울시 서초구", "54321", "user2@test.com");
-        Order order3 = new Order("서울시 송파구", "67890", "user3@test.com");
+        Order order1 = new Order("서울시 강남구", "12345", "user1@test.com", LocalDate.now());
+        Order order2 = new Order("서울시 서초구", "54321", "user2@test.com", LocalDate.now());
+        Order order3 = new Order("서울시 송파구", "67890", "user3@test.com", LocalDate.now());
 
 
         order1.addOrderProduct(new OrderProduct(product1, product1.getPrice(), 2));
