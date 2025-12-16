@@ -34,4 +34,9 @@ public class Product extends BaseEntity {
                 .description(description)
                 .build();
     }
+    public void modify(String name, Integer price, String description) {
+        this.name = name;
+        this.price = price;
+        this.description = description;
+    }
 }
