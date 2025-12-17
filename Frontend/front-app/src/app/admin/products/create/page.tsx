@@ -60,7 +60,7 @@ export default function Home() {
   return (
     <form onSubmit={handleSubmit}>
       {/* 메인 영역 */}
-      <div className="flex gap-10">
+      <div className="flex gap-10 p-5">
         {/* 좌측 영역 */}
         <div className="w-1/3 flex flex-col gap-6">
           {/* 이미지 */}
@@ -79,7 +79,7 @@ export default function Home() {
               onChange={(e) =>
                 setPrice(Number(e.target.value.replace(/[^0-9]/g, "")))
               }
-              className="w-full border px-3 py-2 rounded"
+              className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 outline-none focus:border-gray-600"
             />
           </div>
         </div>
@@ -94,7 +94,7 @@ export default function Home() {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full border px-3 py-2 rounded bg-white-200"
+              className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 outline-none focus:border-gray-600"
               disabled={isSubmitting}
             />
           </div>
@@ -106,7 +106,7 @@ export default function Home() {
               placeholder="예) 산미가 강하고 꽃향기가 남"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full h-full border px-3 py-2 rounded bg-white-200 resize-none"
+              className="w-full h-full rounded-md border border-gray-300 bg-white px-3 py-2 outline-none focus:border-gray-600 resize-none"
               disabled={isSubmitting}
             />
           </div>
@@ -118,14 +118,14 @@ export default function Home() {
         <button
           type="button"
           onClick={() => router.push("/admin/products")}
-          className="border px-8 py-2 rounded hover:bg-gray-100"
+          className="rounded-md border border-gray-900 px-4 py-4 font-semibold hover:bg-gray-900 hover:text-white w-22"
           disabled={isSubmitting}
         >
           취소
         </button>
         <button
           type="submit"
-          className="border px-8 py-2 rounded hover:bg-gray-100"
+          className="rounded-md border border-gray-900 px-4 py-4 font-semibold hover:bg-gray-900 hover:text-white w-22"
           disabled={isSubmitting}
         >
           완료

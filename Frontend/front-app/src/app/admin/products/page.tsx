@@ -5,7 +5,7 @@ import { ProductDto } from "@/type/product";
 import { apiFetch } from "@/lib/backend/client";
 import Link from "next/link";
 
-const formatPrice = (price: number) => price.toLocaleString("ko-KR");
+import { formatWon } from "@/lib/frontend/tools";
 
 export default function Home() {
   const [products, setProducts] = useState<ProductDto[]>([]);
@@ -36,9 +36,10 @@ export default function Home() {
 
   return (
     <div>
-      <div className="bg-white border rounded-xl shadow-md h-[530px] flex flex-col">
+      <div className="mx-auto max-w-6xl px-4 py-4">
+        <h2 className="text-2xl font-bold">상품 목록</h2>
         {/* 상품 목록*/}
-        <div className="flex-1 overflow-y-auto p-6 space-y-4">
+        <div className="mt-6 space-y-4 my-4">
           {products.length === 0 && (
             <p className="text-center text-gray-500">등록된 상품이 없습니다.</p>
           )}
@@ -46,37 +47,50 @@ export default function Home() {
           {products.map((product) => (
             <div
               key={product.id}
-              className="flex items-center gap-6 border rounded-lg p-4"
+              className="flex items-center gap-5 rounded-lg border border-gray-200 bg-white p-5"
             >
               {/* 이미지 */}
-              <div className="w-14 h-14 bg-gray-200 rounded flex items-center justify-center text-gray-500 text-sm shrink-0">
-                이미지
+              <div className="h-14 w-14 flex-none overflow-hidden rounded-md border border-gray-200 bg-gray-50">
+                {/* @ts-ignore: DTO에 imageUrl 없을 수 있음 */}
+                {product.imageUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    // @ts-ignore
+                    src={product.imageUrl}
+                    alt={product.name}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center text-xs text-gray-400">
+                    IMG
+                  </div>
+                )}
               </div>
 
               {/* 이름 + 설명 (가변 영역) */}
               <div className="flex-1 min-w-0">
-                <div className="font-semibold truncate">{product.name}</div>
-                <div className="text-sm text-gray-500 truncate">
+                <div className="truncate text-lg font-semibold">{product.name}</div>
+                <div className="mt-1 truncate text-sm text-gray-500">
                   {product.description}
                 </div>
               </div>
 
               {/* 가격 (고정 영역) */}
-              <div className="w-28 text-right font-medium shrink-0">
-                {formatPrice(product.price)}원
+              <div className="w-26 text-right text-lg font-semibold">
+                {formatWon(product.price)}원
               </div>
 
               {/* 버튼 */}
               <div className="flex gap-2 shrink-0">
                 <Link
                   href={`/admin/products/edit/${product.id}`}
-                  className="text-center py-2 border rounded hover:bg-gray-100 w-15"
+                  className="rounded-md border border-gray-900 px-4 py-2 text-sm font-semibold hover:bg-gray-900 hover:text-white w-15"
                 >
                   수정
                 </Link>
                 <button
                   onClick={() => handleDelete(product.id)}
-                  className="text-center py-2 border rounded hover:bg-gray-100 w-15"
+                  className="rounded-md border border-gray-900 px-4 py-2 text-sm font-semibold hover:bg-gray-900 hover:text-white w-15"
                 >
                   삭제
                 </button>
