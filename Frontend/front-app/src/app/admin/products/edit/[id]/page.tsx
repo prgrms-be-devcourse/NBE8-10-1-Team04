@@ -20,6 +20,7 @@ export default function EditProductPage() {
   const [price, setPrice] = useState<number | "">("");
   const [description, setDescription] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
 
   useEffect(() => {
     if (!productId) return;
@@ -47,7 +48,7 @@ export default function EditProductPage() {
     try {
       await apiFetch(`/api/v1/product/${productId}`, {
         method: "PUT",
-        body: JSON.stringify({ name, price, description }),
+        body: JSON.stringify({ name, price, description, imageUrl }),
       });
       alert("상품이 수정되었습니다.");
       router.push("/admin/products");
@@ -62,11 +63,33 @@ export default function EditProductPage() {
       <div className="flex gap-10">
         {/* 좌측 */}
         <div className="w-1/3 flex flex-col gap-6">
-          {/* 이미지 */}
-          <div className="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-500">
-            이미지
+          {/* 이미지 미리보기 */}{" "}
+          <div className="h-32 w-32 overflow-hidden rounded-md border border-gray-200 bg-gray-50">
+            {" "}
+            {imageUrl ? (
+              <img
+                src={imageUrl}
+                className="h-full w-full object-cover"
+                alt="미리보기"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center text-sm text-gray-400">
+                {" "}
+                이미지 없음{" "}
+              </div>
+            )}{" "}
+          </div>{" "}
+          <div>
+            {" "}
+            <label className="block mb-1 font-medium">이미지 URL</label>{" "}
+            <input
+              type="text"
+              placeholder="https://example.com/image.jpg"
+              value={imageUrl}
+              onChange={(e) => setImageUrl(e.target.value)}
+              className="w-full border px-3 py-2 rounded"
+            />{" "}
           </div>
-
           {/* 가격 */}
           <div>
             <label className="block mb-1 font-medium">가격 :</label>
