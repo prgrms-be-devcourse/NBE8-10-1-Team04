@@ -45,13 +45,15 @@ public class ApiV1ProductController {
             @NotNull
             Integer price,
             @Size(max = 500)
-            String description
+            String description,
+            @Size(max = 300)
+            String imageUrl
     ) {
     }
 
     @PostMapping("/product")
     public RsData<ProductDto> createProduct(@RequestBody @Valid ProductCreateReq req) {
-        Product product = productService.create(req.name, req.price, req.description);
+        Product product = productService.create(req.name, req.price, req.description, req.imageUrl);
         return new RsData<>(
                 "200-1",
                 "%d번 상품이 생성되었습니다.".formatted(product.getId()),
@@ -74,7 +76,7 @@ public class ApiV1ProductController {
     @Transactional
     public RsData<Void> modify(@PathVariable int id,@RequestBody @Valid ProductCreateReq req){
         Product product = productService.findById(id).get();
-        productService.modify(product, req.name, req.price, req.description);
+        productService.modify(product, req.name, req.price, req.description, req.imageUrl);
         return new RsData<>(
                 "200-1",
                 "%s 상품이 수정되었습니다.".formatted(product.getName())

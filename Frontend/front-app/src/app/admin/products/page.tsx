@@ -69,7 +69,9 @@ export default function Home() {
 
               {/* 이름 + 설명 (가변 영역) */}
               <div className="flex-1 min-w-0">
-                <div className="truncate text-lg font-semibold">{product.name}</div>
+                <div className="truncate text-lg font-semibold">
+                  {product.name}
+                </div>
                 <div className="mt-1 truncate text-sm text-gray-500">
                   {product.description}
                 </div>
