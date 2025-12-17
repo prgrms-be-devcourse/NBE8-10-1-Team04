@@ -70,13 +70,13 @@ export default function Home() {
               <div className="flex gap-2 shrink-0">
                 <Link
                   href={`/admin/products/edit/${product.id}`}
-                  className="px-4 py-1 border rounded hover:bg-gray-100"
+                  className="text-center py-2 border rounded hover:bg-gray-100 w-15"
                 >
                   수정
                 </Link>
                 <button
                   onClick={() => handleDelete(product.id)}
-                  className="px-4 py-1 border rounded hover:bg-gray-100"
+                  className="text-center py-2 border rounded hover:bg-gray-100 w-15"
                 >
                   삭제
                 </button>
