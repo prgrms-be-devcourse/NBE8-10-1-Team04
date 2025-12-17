@@ -5,11 +5,23 @@ import { apiFetch } from "@/lib/backend/client";
 import { OrderResponseDto } from "@/type/orderResponse";
 import { OrderProductDto } from "@/type/orderProduct";
 import Link from "next/link"; // Next.js의 Link 컴포넌트를 가져옵니다.
+import { useRouter } from "next/navigation";
 
-export default function Page({ params }: { params: Promise<{ orderId: String }> }) {    
+export default function Page({ params }: { params: Promise<{ orderId: string }> }) {    
     const [order, setOrder] = useState<OrderResponseDto | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const { orderId } = use(params);
+
+    const router = useRouter();
+    const deletePost = (id: string) => {
+    apiFetch(`/api/v1/order/${id}`, {
+      method: "DELETE",
+    }).then((data) => {
+      alert(data.msg);
+      router.replace(`/orders`);
+    });
+  };
+
     useEffect(() => {
         apiFetch(`/api/v1/order/${orderId}`)
           .then((data) => {
@@ -54,11 +66,16 @@ export default function Page({ params }: { params: Promise<{ orderId: String }> 
                 <p>주문된 상품이 없습니다.</p>
             )}
              <div className="flex gap-2">
-            <button className="p-2 rounded border" >
-            삭제
+            <button
+            className="p-2 rounded border"
+            onClick={() =>
+                confirm(`${orderId}번 주문을 취소하시겠습니까?`) &&
+                deletePost(orderId)
+            }>
+            주문 취소
             </button>
             <Link className="p-2 rounded border" href={`${orderId}/edit`}>
-            수정
+            주문수정
             </Link>
         </div>
         </main>

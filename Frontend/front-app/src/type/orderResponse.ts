@@ -5,7 +5,9 @@ export type OrderResponseDto = {
     totalPrice: number;    
     deliveryDate: string;     
     deliveryStatus: string; 
-    
+    address: string;
+    zipCode : string;
+    email : string;
     // OrderProductDto 리스트 포함
     products: OrderProductDto[]; 
 };
