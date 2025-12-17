@@ -8,6 +8,9 @@ import java.util.List;
 
 @Getter
 public class OrderResponse {
+    private String address;
+    private String zipCode;
+    private String email;
     private int totalQuantity;
     private int totalPrice;
     private LocalDate deliveryDate;
@@ -15,6 +18,9 @@ public class OrderResponse {
     private List<OrderProductDto> products;
 
     public OrderResponse(Order order) {
+        this.address = order.getAddress();
+        this.zipCode = order.getZipCode();
+        this.email = order.getEmail();
         this.totalQuantity = order.getTotalQuantity();
         this.totalPrice = order.getTotalPrice();
         this.deliveryDate = order.getDeliveryDate();

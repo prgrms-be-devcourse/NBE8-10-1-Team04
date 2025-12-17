@@ -101,6 +101,7 @@ public class OrderService {
                             group
                     );
                 })
+                .sorted(((o1, o2) -> o2.getDeliveryDate().compareTo(o1.getDeliveryDate())))
                 .toList();
     }
 

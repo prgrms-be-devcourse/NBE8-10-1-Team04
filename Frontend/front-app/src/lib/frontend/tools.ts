@@ -1,2 +1,1 @@
-export const formatWon = (n: number) =>
-  new Intl.NumberFormat("ko-KR").format(n);
+export const formatWon = (n: number) => new Intl.NumberFormat("ko-KR").format(n);
