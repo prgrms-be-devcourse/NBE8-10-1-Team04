@@ -71,9 +71,13 @@ export default function EditProductPage() {
           <div>
             <label className="block mb-1 font-medium">가격 :</label>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               value={price}
-              onChange={(e) => setPrice(Number(e.target.value))}
+              onChange={(e) =>
+                setPrice(Number(e.target.value.replace(/[^0-9]/g, "")))
+              }
               className="w-full border px-3 py-2 rounded"
             />
           </div>
@@ -86,6 +90,7 @@ export default function EditProductPage() {
             <label className="block mb-1 font-medium">상품 이름</label>
             <input
               type="text"
+              placeholder="예) 아라비카 (원두커피용)"
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="w-full border px-3 py-2 rounded bg-white-200"
@@ -97,6 +102,7 @@ export default function EditProductPage() {
             <label className="block mb-1 font-medium">상품 설명</label>
             <textarea
               value={description}
+              placeholder="예) 산미가 강하고 꽃향기가 남"
               onChange={(e) => setDescription(e.target.value)}
               className="w-full h-full border px-3 py-2 rounded bg-white-200 resize-none"
             />
@@ -105,7 +111,7 @@ export default function EditProductPage() {
       </div>
 
       {/* 하단 버튼 */}
-      <div className="flex justify-center gap-10 mt-10">
+      <div className="flex justify-center gap-10 mt-50">
         <button
           type="button"
           onClick={() => router.push("/admin/products")}

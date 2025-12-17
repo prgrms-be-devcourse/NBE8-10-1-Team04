@@ -72,11 +72,14 @@ export default function Home() {
           <div>
             <label className="block mb-1 font-medium">가격 :</label>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               value={price}
-              onChange={(e) => setPrice(Number(e.target.value))}
+              onChange={(e) =>
+                setPrice(Number(e.target.value.replace(/[^0-9]/g, "")))
+              }
               className="w-full border px-3 py-2 rounded"
-              disabled={isSubmitting}
             />
           </div>
         </div>
@@ -87,6 +90,7 @@ export default function Home() {
           <div>
             <label className="block mb-1 font-medium">상품 이름</label>
             <input
+              placeholder="예) 아라비카 (원두커피용)"
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -99,6 +103,7 @@ export default function Home() {
           <div className="flex-1">
             <label className="block mb-1 font-medium">상품 설명</label>
             <textarea
+              placeholder="예) 산미가 강하고 꽃향기가 남"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               className="w-full h-full border px-3 py-2 rounded bg-white-200 resize-none"
@@ -109,18 +114,18 @@ export default function Home() {
       </div>
 
       {/* 하단 버튼 */}
-      <div className="flex justify-center gap-10 mt-10">
+      <div className="flex justify-center gap-10 mt-50">
         <button
           type="button"
           onClick={() => router.push("/admin/products")}
-          className="border px-8 py-2 rounded"
+          className="border px-8 py-2 rounded hover:bg-gray-100"
           disabled={isSubmitting}
         >
           취소
         </button>
         <button
           type="submit"
-          className="border px-8 py-2 rounded"
+          className="border px-8 py-2 rounded hover:bg-gray-100"
           disabled={isSubmitting}
         >
           완료
