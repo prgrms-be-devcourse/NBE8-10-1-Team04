@@ -1,21 +1,24 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ProductDto } from "@/type/product";
 import { apiFetch } from "@/lib/backend/client";
 
 export default function Home() {
   const [products, setProducts] = useState<ProductDto[] | null>(null);
-
+  const router = useRouter();
   useEffect(() => {
-    apiFetch(`/api/v1/products`)
-      .then(setProducts)
-      .catch(console.error);
+    apiFetch(`/api/v1/products`).then(setProducts).catch(console.error);
   }, []);
 
   return (
     <>
       <h1>Grids & Circle</h1>
+
+      <button onClick={() => router.push("/admin/products")}>
+        관리자 페이지
+      </button>
       <div>
         <h2>상품 목록</h2>
         {products?.map((product) => (
