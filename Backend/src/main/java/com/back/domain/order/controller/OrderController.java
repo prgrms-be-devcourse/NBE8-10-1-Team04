@@ -76,10 +76,15 @@ public class OrderController {
     // 배송상태 변경
     @Transactional
     @PutMapping("/orders/status")
-    public void modfyDeliverStatus(@RequestBody UpdateStatusRequest request) {
+    public RsData<Void> modfyDeliverStatus(@RequestBody UpdateStatusRequest request) {
         orderService.updateOrdersDeliveryStatus(
                 request.getOrderIds(),
                 request.getDeliveryStatus()
+        );
+
+        return new RsData<>(
+                "200-1",
+                "배송 상태 변경이 완료되었습니다."
         );
     }
 
