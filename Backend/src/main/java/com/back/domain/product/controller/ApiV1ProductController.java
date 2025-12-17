@@ -28,6 +28,17 @@ public class ApiV1ProductController {
         return items.stream().map(ProductDto::new).toList();
     }
 
+    @GetMapping("/products/{id}")
+    @Transactional(readOnly = true)
+    public ProductDto getItem(@PathVariable int id) {
+        Product product = productService.findById(id)
+                .orElseThrow(() -> new RuntimeException("상품이 존재하지 않습니다."));
+        return new ProductDto(product);
+    }
+
+
+
+
     public record ProductCreateReq(
             @NotBlank
             String name,
