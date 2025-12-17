@@ -21,20 +21,27 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="ko">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} relative antialiased bg-gray-300 h-screen overflow-hidden flex items-end justify-center p-8 pb-12`}
-      >
-        <header className="absolute top-10 text-center text-4xl">
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css"
+        />
+      </head>
+      <body className="antialiased bg-gray-300 min-h-screen">
+        <header className="pt-10 text-center text-4xl font-bold">
           <Link href={`/`}>백(BACK) 다방</Link>
         </header>
-        <div className="absolute bg-white rounded-2xl shadow-xl/30 w-235 h-144 top-29 p-5 overflow-y-auto">
-          {children}
-        </div>
+
+        <main className="mx-auto max-w-6xl px-6 py-8">
+          <div className="bg-white rounded-2xl shadow-xl/30 p-5 max-h-[calc(100vh-180px)] overflow-y-auto">
+            {children}
+          </div>
+        </main>
       </body>
     </html>
   );

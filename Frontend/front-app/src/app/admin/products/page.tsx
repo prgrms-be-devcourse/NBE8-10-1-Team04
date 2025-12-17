@@ -38,7 +38,7 @@ export default function Home() {
       {/* 🔲 하나의 레이어 */}
       <div className="bg-white border rounded-xl shadow-md h-[530px] flex flex-col">
         {/* 🔽 상품 목록 (스크롤 영역) */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-4">
+        <div className="flex-1 overflow-y-auto p-6 space-y-2">
           {products.length === 0 && (
             <p className="text-center text-gray-500">등록된 상품이 없습니다.</p>
           )}
@@ -61,19 +61,19 @@ export default function Home() {
               </div>
 
               {/* 가격 */}
-              <div className="font-medium">{product.price}원</div>
+              <div className="font-medium ml-auto">{product.price}원</div>
 
               {/* 버튼 */}
-              <div className="flex gap-2">
+              <div className="flex gap-2 items-center p-2">
                 <Link
                   href={`/admin/products/edit/${product.id}`}
-                  className="px-4 py-1 border rounded hover:bg-gray-100"
+                  className="text-center py-2 border rounded hover:bg-gray-100 w-15"
                 >
                   수정
                 </Link>
                 <button
                   onClick={() => handleDelete(product.id)}
-                  className="px-4 py-1 border rounded hover:bg-gray-100"
+                  className="text-center py-2 border rounded hover:bg-gray-100 w-15"
                 >
                   삭제
                 </button>

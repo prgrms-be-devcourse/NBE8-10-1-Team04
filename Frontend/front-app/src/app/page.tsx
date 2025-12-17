@@ -143,7 +143,7 @@ export default function Home() {
                     <p className="w-24 text-right text-lg font-semibold">{formatWon(product.price)}원</p>
                     <button
                       onClick={() => addToCart(product)}
-                      className="rounded-md border border-gray-900 px-4 py-2 text-sm font-semibold hover:bg-gray-900 hover:text-white"
+                      className="rounded-md border border-gray-900 px-4 py-2 text-sm font-semibold hover:bg-gray-900 hover:text-white w-15"
                     >
                       추가
                     </button>
