@@ -1,4 +1,4 @@
-export type OrderDto = {
+export type EmailOrderDto = {
     orderId : number,
     address : String ,
     zipCode : String,

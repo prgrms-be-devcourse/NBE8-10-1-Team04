@@ -2,13 +2,13 @@
 "use client"; // 상태 관리를 위해 클라이언트 컴포넌트 선언
 
 import { use, useEffect, useState } from "react";
-import { OrderDto } from "@/type/order";
+import { EmailOrderDto } from "@/type/emailOrder";
 import { apiFetch } from "@/lib/backend/client";
 import Link from "next/link"; // Next.js의 Link 컴포넌트를 가져옵니다.
 
 
 export default function Page({ params }: { params: Promise<{ email: String }> }) {    
-    const [orders, setOrders] = useState<OrderDto[] | null>(null);
+    const [orders, setOrders] = useState<EmailOrderDto[] | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const { email } = use(params);
     
