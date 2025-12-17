@@ -1,0 +1,126 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter, useParams } from "next/navigation";
+import { apiFetch } from "@/lib/backend/client";
+
+interface ProductDto {
+  id: number;
+  name: string;
+  price: number;
+  description: string;
+}
+
+export default function EditProductPage() {
+  const router = useRouter();
+  const params = useParams();
+  const productId = params?.id;
+
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState<number | "">("");
+  const [description, setDescription] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (!productId) return;
+
+    const loadProduct = async () => {
+      const data: ProductDto = await apiFetch(`/api/v1/products/${productId}`);
+      setName(data.name);
+      setPrice(data.price);
+      setDescription(data.description);
+    };
+
+    loadProduct();
+  }, [productId]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!name.trim() || price === "" || price <= 0 || !description.trim()) {
+      alert("모든 항목을 입력해주세요.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      await apiFetch(`/api/v1/product/${productId}`, {
+        method: "PUT",
+        body: JSON.stringify({ name, price, description }),
+      });
+      alert("상품이 수정되었습니다.");
+      router.push("/admin/products");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      {/* 메인 영역 */}
+      <div className="flex gap-10">
+        {/* 좌측 */}
+        <div className="w-1/3 flex flex-col gap-6">
+          {/* 이미지 */}
+          <div className="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-500">
+            이미지
+          </div>
+
+          {/* 가격 */}
+          <div>
+            <label className="block mb-1 font-medium">가격 :</label>
+            <input
+              type="number"
+              value={price}
+              onChange={(e) => setPrice(Number(e.target.value))}
+              className="w-full border px-3 py-2 rounded"
+            />
+          </div>
+        </div>
+
+        {/* 우측 */}
+        <div className="w-2/3 flex flex-col gap-6">
+          {/* 상품 이름 */}
+          <div>
+            <label className="block mb-1 font-medium">상품 이름</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full border px-3 py-2 rounded bg-white-200"
+            />
+          </div>
+
+          {/* 상품 설명 */}
+          <div className="flex-1">
+            <label className="block mb-1 font-medium">상품 설명</label>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="w-full h-full border px-3 py-2 rounded bg-white-200 resize-none"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* 하단 버튼 */}
+      <div className="flex justify-center gap-10 mt-10">
+        <button
+          type="button"
+          onClick={() => router.push("/admin/products")}
+          className="border px-8 py-2 rounded"
+        >
+          취소
+        </button>
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="border px-8 py-2 rounded"
+        >
+          완료
+        </button>
+      </div>
+    </form>
+  );
+}

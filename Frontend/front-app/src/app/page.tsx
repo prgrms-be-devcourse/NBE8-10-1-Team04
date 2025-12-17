@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { ProductDto } from "@/type/product";
 import { apiFetch } from "@/lib/backend/client";
@@ -11,6 +12,7 @@ type CartItem = {
 
 export default function Home() {
   const [products, setProducts] = useState<ProductDto[] | null>(null);
+  const router = useRouter();
 
   // cart: productId -> { product, qty }
   const [cart, setCart] = useState<Record<number, CartItem>>({});
@@ -20,9 +22,7 @@ export default function Home() {
   const [zipCode, setZipCode] = useState("");
 
   useEffect(() => {
-    apiFetch(`/api/v1/products`)
-      .then(setProducts)
-      .catch(console.error);
+    apiFetch(`/api/v1/products`).then(setProducts).catch(console.error);
   }, []);
 
   const cartItems = useMemo(() => Object.values(cart), [cart]);
