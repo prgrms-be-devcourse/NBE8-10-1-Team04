@@ -11,6 +11,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jakarta.persistence.CascadeType.PERSIST;
+import static jakarta.persistence.CascadeType.REMOVE;
+
 @Entity
 @Getter
 @Setter
@@ -23,7 +26,7 @@ public class Order extends BaseEntity {
     private LocalDate deliveryDate;
     private String deliveryStatus;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "order", cascade = {PERSIST, REMOVE}, orphanRemoval = true)
     private List<OrderProduct> orderProducts = new ArrayList<>();
 
     public Order(String address, String zipCode, String email, LocalDate date) {
