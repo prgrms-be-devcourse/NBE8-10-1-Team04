@@ -26,21 +26,21 @@ public class ProductService {
     public Optional<Product> findById(int id) {
         return productRepository.findById(id);
     }
-    public void modify(Product product, String name, int price,String description) {
-        product.modify(name, price, description);
+    public void modify(Product product, String name, int price,String description, String imageUrl) {
+        product.modify(name, price, description, imageUrl);
     }
     public void delete(Product product) {
         productRepository.delete(product);
     }
 
     @Transactional
-    public Product create(String name, int price, String description) {
+    public Product create(String name, int price, String description, String imageUrl) {
         if(productRepository.existsByName(name)) {
             throw new EntityExistsException();
         }
 
         return productRepository.save(
-                Product.create(name, price, description)
+                Product.create(name, price, description, imageUrl)
         );
     }
 }

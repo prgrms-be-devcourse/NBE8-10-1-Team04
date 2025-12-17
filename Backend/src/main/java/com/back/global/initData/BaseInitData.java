@@ -42,8 +42,8 @@ public class BaseInitData {
     @Transactional
     public void work1() {
         if (productService.count() > 0) return;
-        productService.create("갤럭시", 1000, "삼성껍니다.");
-        productService.create("아이폰", 5000, "애플껍니다.");
+        productService.create("갤럭시", 1000, "삼성껍니다.", "https://i.postimg.cc/NMRCL4Rs/image.png");
+        productService.create("아이폰", 5000, "애플껍니다.", "https://i.postimg.cc/NMRCL4Rs/image.png");
     }
     @PostConstruct
     @Transactional
@@ -53,8 +53,8 @@ public class BaseInitData {
             return; // 이미 데이터 있으면 다시 안 넣음
         }
 
-        Product product1 = new Product("아메리카노", 4500, "맛있어요");
-        Product product2 = new Product("카페라떼", 5000, "산미있는 맛");
+        Product product1 = new Product("아메리카노", 4500, "맛있어요", "https://i.postimg.cc/NMRCL4Rs/image.png");
+        Product product2 = new Product("카페라떼", 5000, "산미있는 맛", "https://i.postimg.cc/NMRCL4Rs/image.png");
         productRepository.save(product1);
         productRepository.save(product2);
 
