@@ -25,21 +25,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko">
+    <html lang="ko" className="h-screen overflow-hidden">
       <head>
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css"
         />
       </head>
-      <body className="antialiased bg-gray-300 min-h-screen">
-        <header className="pt-10 text-center text-4xl font-bold">
+      <body className="antialiased bg-gray-300 h-screen overflow-hidden flex flex-col">
+        <header className="pt-10 pb-6 text-center text-4xl font-bold">
           <Link href={`/`}>백(BACK) 다방</Link>
         </header>
 
-        <main className="mx-auto max-w-6xl px-6 py-8">
-          <div className="bg-white rounded-2xl shadow-xl/30 p-5 max-h-[calc(100vh-180px)] overflow-y-auto">
-            {children}
+        <main className="mx-auto max-w-6xl px-6 pb-8 flex-1 w-full overflow-hidden">
+          <div className="bg-white rounded-2xl shadow-xl/30 overflow-hidden h-full flex">
+            <div className="overflow-y-auto p-5 flex-1">
+              {children}
+            </div>
           </div>
         </main>
       </body>

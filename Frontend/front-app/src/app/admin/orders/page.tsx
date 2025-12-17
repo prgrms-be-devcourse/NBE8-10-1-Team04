@@ -98,7 +98,7 @@ export default function Page() {
             </div>
             
             {/* 스크롤 가능한 주문 목록 */}
-            <div className="flex-1 overflow-y-auto pr-2 space-y-3">
+            <div className="flex-1 overflow-y-auto space-y-3">
                 {filteredOrders.length === 0 ? (
                     <div className="text-center text-gray-500 mt-8">
                         해당 상태의 주문이 없습니다.
