@@ -48,9 +48,9 @@ export default function Page({ params }: { params: Promise<{ email: string }> })
     );
   }
   return (
-    <div className="mx-auto max-w-4xl px-4 py-6">
+    <div className="flex flex-col h-full mx-auto max-w-5xl px-4 py-6">
       {/* 제목 */}
-      <header className="mb-6">
+      <header className="mb-6 flex-shrink-0">
         <h1 className="text-2xl font-bold tracking-tight text-gray-900">
           {decodeURIComponent(email)} 님의 주문 내역
         </h1>
@@ -59,7 +59,8 @@ export default function Page({ params }: { params: Promise<{ email: string }> })
         </p>
       </header>
 
-      {/* 주문 목록 */}
+      <div className="flex-1 overflow-y-auto space-y-3">
+        {/* 주문 목록 */}
       {orders && orders.length > 0 ? (
         <div className="space-y-4">
           {orders.map((order) => (
@@ -126,6 +127,7 @@ export default function Page({ params }: { params: Promise<{ email: string }> })
           </p>
         </div>
       )}
+      </div>
     </div>
   );
 }
