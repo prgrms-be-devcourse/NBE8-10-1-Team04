@@ -12,6 +12,13 @@ export default function Page({ params }: { params: Promise<{ orderId: string }> 
     const [isLoading, setIsLoading] = useState(true);
     const { orderId } = use(params);
 
+    const DELIVERY_STATUS_MAP: Record<string, string> = {
+        "CONFIRM": "주문 확인",
+        "READY": "배송 준비 중",
+        "SHIPPING": "배송 중",
+        "DELIVERED": "배송 완료",
+    };
+
     const router = useRouter();
     const deletePost = (id: string) => {
     apiFetch(`/api/v1/order/${id}`, {
@@ -46,7 +53,7 @@ export default function Page({ params }: { params: Promise<{ orderId: string }> 
         <main style={{ padding: '20px' }}>
         <h1>주문 번호 {orderId}번 </h1>
         <p>총 수량: {order.totalQuantity}개 | 총 가격: {order.totalPrice}원</p>
-            <p>배송 상태: {order.deliveryStatus} (예정일: {order.deliveryDate})</p>
+            <p>배송 상태: {DELIVERY_STATUS_MAP[order.deliveryStatus]} (예정일: {order.deliveryDate})</p>
 
             <hr style={{ margin: '20px 0' }} />
 

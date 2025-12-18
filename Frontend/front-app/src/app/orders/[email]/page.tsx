@@ -12,6 +12,12 @@ export default function Page({ params }: { params: Promise<{ email: string }> })
   const [isLoading, setIsLoading] = useState(true);
   const { email } = use(params);
 
+  const DELIVERY_STATUS_MAP: Record<string, string> = {
+      "CONFIRM": "주문 확인",
+      "READY": "배송 준비 중",
+      "SHIPPING": "배송 중",
+      "DELIVERED": "배송 완료",
+  };
 
   useEffect(() => {
     apiFetch(`/api/v1/orders/${email}`)
@@ -50,7 +56,7 @@ export default function Page({ params }: { params: Promise<{ email: string }> })
                 <p>총 수량: {order.totalQuantity}</p>
                 <p>총 가격: {order.totalPrice}</p>
                 <p>배송 날짜: {order.deliveryDate}</p>
-                <p>배송 상태: {order.deliveryStatus}</p>
+                <p>배송 상태: {DELIVERY_STATUS_MAP[order.deliveryStatus as string]}</p>
               </div>
             </Link>
           ))}
