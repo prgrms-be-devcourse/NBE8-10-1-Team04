@@ -69,7 +69,7 @@ public class ApiV1ProductController {
 
         return new RsData<>(
                 "200-1",
-                "%s 상품이 삭제되었습니다.".formatted(product.getName())
+                "%s 상품이 삭제 처리되었습니다.".formatted(product.getName())
         );
     }
     @PutMapping("/product/{id}")
