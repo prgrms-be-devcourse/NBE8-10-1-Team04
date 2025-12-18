@@ -123,7 +123,7 @@ export default function Page({ params }: { params: Promise<{ orderId: string }> 
           </section>
 
           {/* 하단 버튼 액션: 배송 완료(DELIVERED)가 아닐 때만 표시 */}
-            {order.deliveryStatus !== "DELIVERED" && (
+            {order.deliveryStatus == "CONFIRM" && (
             <div className="flex gap-3 pt-6 border-t border-gray-100">
                 <button
                 onClick={() => confirm(`${orderId}번 주문을 취소하시겠습니까?`) && deletePost(orderId)}
