@@ -74,7 +74,20 @@ export default function Home() {
 
   const formatWon = (n: number) => new Intl.NumberFormat("ko-KR").format(n);
 
+  const validateCheckout = () => {
+    if (!email.trim()) return "이메일을 입력해주세요.";
+    if (!address.trim()) return "주소를 입력해주세요.";
+    if (!zipCode.trim()) return "우편번호를 입력해주세요.";
+    if (cartItems.length === 0) return "장바구니에 상품이 없습니다.";
+    return null;
+  };
+
   const handleCheckout = async () => {
+    const error = validateCheckout();
+    if (error) {
+      alert(error);
+      return;
+    }
     const payload = {
       address,
       zipCode,
