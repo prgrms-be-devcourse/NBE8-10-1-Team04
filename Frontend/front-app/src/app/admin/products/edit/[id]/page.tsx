@@ -9,6 +9,7 @@ interface ProductDto {
   name: string;
   price: number;
   description: string;
+  imageUrl: string;
 }
 
 export default function EditProductPage() {
@@ -30,6 +31,7 @@ export default function EditProductPage() {
       setName(data.name);
       setPrice(data.price);
       setDescription(data.description);
+      setImageUrl(data.imageUrl);
     };
 
     loadProduct();
