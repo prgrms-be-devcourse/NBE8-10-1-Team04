@@ -28,19 +28,32 @@ public class ApiV1ProductController {
         return items.stream().map(ProductDto::new).toList();
     }
 
+    @GetMapping("/products/{id}")
+    @Transactional(readOnly = true)
+    public ProductDto getItem(@PathVariable int id) {
+        Product product = productService.findById(id)
+                .orElseThrow(() -> new RuntimeException("상품이 존재하지 않습니다."));
+        return new ProductDto(product);
+    }
+
+
+
+
     public record ProductCreateReq(
             @NotBlank
             String name,
             @NotNull
             Integer price,
             @Size(max = 500)
-            String description
+            String description,
+            @Size(max = 300)
+            String imageUrl
     ) {
     }
 
     @PostMapping("/product")
     public RsData<ProductDto> createProduct(@RequestBody @Valid ProductCreateReq req) {
-        Product product = productService.create(req.name, req.price, req.description);
+        Product product = productService.create(req.name, req.price, req.description, req.imageUrl);
         return new RsData<>(
                 "200-1",
                 "%d번 상품이 생성되었습니다.".formatted(product.getId()),
@@ -63,7 +76,7 @@ public class ApiV1ProductController {
     @Transactional
     public RsData<Void> modify(@PathVariable int id,@RequestBody @Valid ProductCreateReq req){
         Product product = productService.findById(id).get();
-        productService.modify(product, req.name, req.price, req.description);
+        productService.modify(product, req.name, req.price, req.description, req.imageUrl);
         return new RsData<>(
                 "200-1",
                 "%s 상품이 수정되었습니다.".formatted(product.getName())

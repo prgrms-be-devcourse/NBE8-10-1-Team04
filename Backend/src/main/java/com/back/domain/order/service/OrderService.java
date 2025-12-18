@@ -101,6 +101,7 @@ public class OrderService {
                             group
                     );
                 })
+                .sorted(((o1, o2) -> o2.getDeliveryDate().compareTo(o1.getDeliveryDate())))
                 .toList();
     }
 
@@ -111,5 +112,9 @@ public class OrderService {
             order.setDeliveryStatus(status);
             orderRepository.save(order);
         });
+    }
+
+    public void delete(int id) {
+        orderRepository.deleteById(id);
     }
 }

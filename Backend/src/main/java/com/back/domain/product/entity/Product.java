@@ -21,22 +21,29 @@ public class Product extends BaseEntity {
     @Column(length = 200)
     private String description;
 
-    public Product(String name, int price, String description) {
+    @Column(length = 300)
+    private String imageUrl;
+
+    public Product(String name, int price, String description, String imageUrl) {
         this.name = name;
         this.price = price;
         this.description = description;
+        this.imageUrl = imageUrl;
+
     }
 
-    public static Product create(String name, Integer price, String description) {
+    public static Product create(String name, Integer price, String description, String imageUrl) {
         return Product.builder()
                 .name(name)
                 .price(price)
                 .description(description)
+                .imageUrl(imageUrl)
                 .build();
     }
-    public void modify(String name, Integer price, String description) {
+    public void modify(String name, Integer price, String description, String imageUrl) {
         this.name = name;
         this.price = price;
         this.description = description;
+        this.imageUrl = imageUrl;
     }
 }
