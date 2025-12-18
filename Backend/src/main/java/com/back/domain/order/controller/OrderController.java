@@ -5,6 +5,7 @@ import com.back.domain.order.dto.*;
 import com.back.domain.order.entity.Order;
 import com.back.domain.order.service.OrderService;
 import com.back.global.rsData.RsData;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class OrderController {
         return orderService.getGroupedOrders();
     }
 
-    // 이메일 다건 조회 (http://localhost:8080/api/v1/orders/test@test.com)
+    // 이메일 다건 조회
     @Transactional(readOnly = true)
     @GetMapping("/orders/{email}")
     public List<OrderDto> findOrdersByEmail(
@@ -48,7 +49,7 @@ public class OrderController {
     // 주문 생성
     @Transactional
     @PostMapping("/order")
-    public RsData<Void> createOrder(@RequestBody OrderCreateRequest createRequest) {
+    public RsData<Void> createOrder(@Valid @RequestBody OrderCreateRequest createRequest) {
         orderService.createOrder(createRequest);
 
         return new RsData<>(
@@ -62,7 +63,7 @@ public class OrderController {
     public RsData<OrderResponse> modifyOrder(
             @PathVariable int id,
             @RequestParam String email,
-            @RequestBody OrderUpdateRequest request
+            @Valid @RequestBody OrderUpdateRequest request
     ) {
         Order order = orderService.updateOrder(id, email, request);
 
