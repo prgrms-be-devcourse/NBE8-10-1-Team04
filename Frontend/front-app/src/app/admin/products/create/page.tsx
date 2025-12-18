@@ -88,7 +88,7 @@ export default function Home() {
               placeholder="https://example.com/image.jpg"
               value={imageUrl}
               onChange={(e) => setImageUrl(e.target.value)}
-              className="w-full border px-3 py-2 rounded"
+              className="w-full border border-gray-300 px-3 py-2 rounded"
             />{" "}
           </div>
           {/* 가격 */}
@@ -137,7 +137,7 @@ export default function Home() {
       </div>
 
       {/* 하단 버튼 */}
-      <div className="flex justify-center gap-10 mt-50">
+      <div className="flex justify-center gap-5 mt-20">
         <button
           type="button"
           onClick={() => router.push("/admin/products")}
