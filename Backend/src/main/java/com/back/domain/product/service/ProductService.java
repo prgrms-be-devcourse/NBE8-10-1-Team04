@@ -20,17 +20,18 @@ public class ProductService {
     }
 
     public List<Product> findAll() {
-        return productRepository.findAll();
+        return productRepository.findByDeletedFalse();
     }
 
     public Optional<Product> findById(int id) {
         return productRepository.findById(id);
     }
+
     public void modify(Product product, String name, int price,String description, String imageUrl) {
         product.modify(name, price, description, imageUrl);
     }
     public void delete(Product product) {
-        productRepository.delete(product);
+        product.delete();
     }
 
     @Transactional
