@@ -27,7 +27,7 @@ export default function AuthButtons() {
   };
 
   return (
-    <div className="absolute top-6 right-8 text-base">
+    <div className="absolute top-2 right-2 text-base">
       {isLogin ? (
         <button
           onClick={handleLogout}

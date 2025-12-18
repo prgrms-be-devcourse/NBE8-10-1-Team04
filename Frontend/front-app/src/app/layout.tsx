@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "백(BACK) 다방",
-  description: "백(BACK) 다방 관리자 시스템",
+  description: "백(BACK) 다방",
 };
 
 export default function RootLayout({
@@ -46,7 +46,7 @@ export default function RootLayout({
           {/* 네비게이션 바 */}
           <NavBar />
 
-          <div className="absolute top-10 right-10 flex items-center justify-end min-w-[120px]">
+          <div className="absolute top-5 right-5 flex items-center justify-end min-w-[150px]">
             <AuthButtons />
           </div>
         </header>
