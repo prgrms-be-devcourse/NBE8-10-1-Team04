@@ -1,5 +1,6 @@
 "use client";
 
+import Swal from "sweetalert2";
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -13,7 +14,12 @@ export default function Home() {
     e.preventDefault(); // 폼의 기본 제출 동작(페이지 새로고침) 방지
 
     if (!email.trim()) {
-      alert('이메일을 입력해주세요.');
+      Swal.fire({
+        text: "이메일을 입력해주세요.",
+        icon: "warning",
+        confirmButtonColor: "#f59e0b",
+        confirmButtonText: "확인",
+      });
       return;
     }
 

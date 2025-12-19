@@ -1,5 +1,6 @@
 "use client";
 
+import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { apiFetch } from "@/lib/backend/client";
@@ -41,7 +42,12 @@ export default function EditProductPage() {
     e.preventDefault();
 
     if (!name.trim() || price === "" || price <= 0 || !description.trim()) {
-      alert("모든 항목을 입력해주세요.");
+      Swal.fire({
+        text: "모든 항목을 입력해주세요.",
+        icon: "warning",
+        confirmButtonColor: "#f59e0b",
+        confirmButtonText: "확인",
+      });
       return;
     }
 
@@ -52,7 +58,12 @@ export default function EditProductPage() {
         method: "PUT",
         body: JSON.stringify({ name, price, description, imageUrl }),
       });
-      alert("상품이 수정되었습니다.");
+      Swal.fire({
+        title: "상품 수정 완료",
+        text: "상품이 수정되었습니다.",
+        icon: "success",
+        confirmButtonColor: "#3b82f6",
+      })
       router.push("/admin/products");
     } finally {
       setIsSubmitting(false);

@@ -1,5 +1,6 @@
 "use client";
 
+import Swal from "sweetalert2";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -20,7 +21,12 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
           setIsAuthorized(true);
         } else {
           setIsAuthorized(false);
-          alert("관리자 권한이 필요한 페이지입니다.");
+          Swal.fire({
+            text: "관리자 권한이 필요한 페이지입니다.",
+            icon: "warning",
+            confirmButtonColor: "#f59e0b",
+            confirmButtonText: "확인",
+          });
           router.replace("/");
         }
       } else {

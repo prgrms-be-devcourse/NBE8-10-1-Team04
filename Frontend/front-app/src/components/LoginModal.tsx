@@ -1,5 +1,6 @@
 "use client";
 
+import Swal from "sweetalert2";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { adminApiFetch } from "@/lib/backend/adminClient";
@@ -26,7 +27,11 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
         body: JSON.stringify({ adminName, password }),
       });
       localStorage.setItem("adminLoggedIn", "true");
-      alert("로그인 성공");
+      Swal.fire({
+        text: "로그인 성공",
+        icon: "success",
+        confirmButtonColor: "#3b82f6",
+      })
       onClose();
       window.location.reload(); // 상태 반영을 위한 새로고침
     } catch (err) {
