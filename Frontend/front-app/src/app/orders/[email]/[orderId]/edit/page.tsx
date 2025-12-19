@@ -143,6 +143,8 @@ export default function Page({
         icon: "warning",
         confirmButtonColor: "#f59e0b",
         confirmButtonText: "확인",
+        heightAuto: false,
+        backdrop: true,
       });
       return;
     }
@@ -175,6 +177,8 @@ export default function Page({
             text: data.msg || "주문 수정이 정상적으로 완료되었습니다.",
             icon: "success",
             confirmButtonColor: "#3b82f6",
+            heightAuto: false,
+            backdrop: true,
           }).then(() => {
             // 사용자가 확인을 누르면 페이지 이동
             router.replace(`/orders/${order.email}/${orderId}`);
@@ -186,6 +190,8 @@ export default function Page({
             text: "수정 중 문제가 발생했습니다. 다시 시도해주세요.",
             icon: "error",
             confirmButtonColor: "#ef4444",
+            heightAuto: false,
+            backdrop: true,
           });
         });
     };
@@ -201,6 +207,8 @@ export default function Page({
         cancelButtonText: "취소",
         confirmButtonColor: "#3b82f6",
         cancelButtonColor: "#94a3b8",
+        heightAuto: false,
+        backdrop: true,
       }).then((result) => {
         if (result.isConfirmed) {
           proceedUpdate();

@@ -35,6 +35,8 @@ export default function Page() {
                 text: data.msg,
                 icon: "success",
                 confirmButtonColor: "#3b82f6",
+                heightAuto: false,
+                backdrop: true,     
             })
             // 주문 목록 새로고침
             apiFetch('/api/v1/orders').then(setOrders);

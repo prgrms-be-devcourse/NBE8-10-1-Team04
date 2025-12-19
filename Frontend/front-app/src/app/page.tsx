@@ -91,6 +91,8 @@ export default function Home() {
         icon: "warning",
         confirmButtonColor: "#f59e0b",
         confirmButtonText: "확인",
+        heightAuto: false,
+        backdrop: true,
       });
       return;
     }
@@ -117,6 +119,8 @@ export default function Home() {
         text: "주문이 완료되었습니다.",
         icon: "success",
         confirmButtonColor: "#3b82f6",
+        heightAuto: false,
+        backdrop: true,
       })
     } catch (e) {
       console.error(e);
@@ -125,6 +129,8 @@ export default function Home() {
         text: "주문 처리 중 오류가 발생했습니다.",
         icon: "error",
         confirmButtonColor: "#ef4444",
+        heightAuto: false,
+        backdrop: true,
       });
     }
   };

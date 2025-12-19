@@ -47,6 +47,8 @@ export default function EditProductPage() {
         icon: "warning",
         confirmButtonColor: "#f59e0b",
         confirmButtonText: "확인",
+        heightAuto: false,
+        backdrop: true,
       });
       return;
     }
@@ -63,6 +65,8 @@ export default function EditProductPage() {
         text: "상품이 수정되었습니다.",
         icon: "success",
         confirmButtonColor: "#3b82f6",
+        heightAuto: false,
+        backdrop: true,
       })
       router.push("/admin/products");
     } finally {

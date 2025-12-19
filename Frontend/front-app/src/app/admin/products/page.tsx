@@ -28,6 +28,8 @@ export default function Home() {
         confirmButtonText: "네, 삭제합니다",
         cancelButtonText: "아니오",
         confirmButtonColor: "#ef4444", 
+        heightAuto: false,
+        backdrop: true,
       });
     if (!result.isConfirmed) return;
 
