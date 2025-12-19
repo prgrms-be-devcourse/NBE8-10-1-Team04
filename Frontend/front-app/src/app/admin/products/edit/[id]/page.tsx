@@ -62,7 +62,7 @@ export default function EditProductPage() {
   return (
     <form onSubmit={handleSubmit}>
       {/* 메인 영역 */}
-      <div className="flex gap-10">
+      <div className="flex gap-10 p-5">
         {/* 좌측 */}
         <div className="w-1/3 flex flex-col gap-6">
           {/* 이미지 미리보기 */}{" "}
@@ -89,7 +89,7 @@ export default function EditProductPage() {
               placeholder="https://example.com/image.jpg"
               value={imageUrl}
               onChange={(e) => setImageUrl(e.target.value)}
-              className="w-full border px-3 py-2 rounded"
+              className="w-full border border-gray-300 px-3 py-2 rounded"
             />{" "}
           </div>
           {/* 가격 */}
@@ -103,7 +103,7 @@ export default function EditProductPage() {
               onChange={(e) =>
                 setPrice(Number(e.target.value.replace(/[^0-9]/g, "")))
               }
-              className="w-full border px-3 py-2 rounded"
+              className="w-full border border-gray-300 px-3 py-2 rounded"
             />
           </div>
         </div>
@@ -118,7 +118,7 @@ export default function EditProductPage() {
               placeholder="예) 아라비카 (원두커피용)"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full border px-3 py-2 rounded bg-white-200"
+              className="w-full border border-gray-300 px-3 py-2 rounded bg-white-200"
             />
           </div>
 
@@ -129,25 +129,25 @@ export default function EditProductPage() {
               value={description}
               placeholder="예) 산미가 강하고 꽃향기가 남"
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full h-full border px-3 py-2 rounded bg-white-200 resize-none"
+              className="w-full h-full border border-gray-300 px-3 py-2 rounded bg-white-200 resize-none"
             />
           </div>
         </div>
       </div>
 
       {/* 하단 버튼 */}
-      <div className="flex justify-center gap-10 mt-50">
+      <div className="flex justify-center gap-5 mt-20">
         <button
           type="button"
           onClick={() => router.push("/admin/products")}
-          className="border px-8 py-2 rounded"
+          className="rounded-md border border-gray-900 px-4 py-4 font-semibold hover:bg-gray-900 hover:text-white w-22"
         >
           취소
         </button>
         <button
           type="submit"
           disabled={isSubmitting}
-          className="border px-8 py-2 rounded"
+          className="rounded-md border border-gray-900 px-4 py-4 font-semibold hover:bg-gray-900 hover:text-white w-22"
         >
           완료
         </button>
