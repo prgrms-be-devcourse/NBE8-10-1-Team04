@@ -1,26 +1,42 @@
 "use client";
 
+import Swal from "sweetalert2";
 import { apiFetch } from "@/lib/backend/client";
-import { use, useEffect, useState } from "react";
+import { use, useEffect, useState, useRef } from "react";
 import { OrderResponseDto } from "@/type/orderResponse";
 import { OrderProductDto } from "@/type/orderProduct";
 import { useRouter } from "next/navigation";
 import { formatWon } from "@/lib/frontend/tools";
 
-export default function Page({ params }: { params: Promise<{ orderId: string }> }) {
+export default function Page({
+  params,
+}: {
+  params: Promise<{ orderId: string }>;
+}) {
   const router = useRouter();
   const { orderId } = use(params);
   const [isLoading, setIsLoading] = useState(true);
   const [order, setOrder] = useState<OrderResponseDto | null>(null);
 
+  // 초기 상품 수량 정보 저장
+  const initialProductsRef = useRef<{ productId: number; quantity: number }[]>(
+    []
+  );
+
   useEffect(() => {
     apiFetch(`/api/v1/order/${orderId}`)
-      .then((data) => setOrder(data))
+      .then((data: OrderResponseDto) => {
+        setOrder(data);
+        initialProductsRef.current = data.products.map((p) => ({
+          productId: p.productId,
+          quantity: p.quantity,
+        }));
+      })
       .catch((error) => console.error(`오류 발생:`, error))
       .finally(() => setIsLoading(false));
   }, [orderId]);
   // --- 수량 조절 및 상품 삭제 로직 ---
-  const updateQuantity = (productId: number, delta: number) => {
+  const updateQuantity = async (productId: number, delta: number) => {
     if (!order) return;
 
     // 1. 수량 업데이트 및 0이 된 상품 필터링
@@ -35,24 +51,46 @@ export default function Page({ params }: { params: Promise<{ orderId: string }> 
 
     // 2. 모든 상품이 삭제시 주문 삭제
     if (updatedProducts.length === 0) {
-      if (confirm("모든 상품을 삭제하시겠습니까? 주문이 취소됩니다.")) {
+      const result = await Swal.fire({
+        title: "모든 상품을 삭제하시겠습니까?",
+        text: "주문이 취소됩니다.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "네, 삭제합니다",
+        cancelButtonText: "아니오",
+        confirmButtonColor: "#ef4444", // red-500
+      });
+      if (result.isConfirmed) {
         // 주문 취소 API 호출
         apiFetch(`/api/v1/order/${orderId}`, {
           method: "DELETE",
-        }).then((data) => {
-          alert(data.msg || "주문이 취소되었습니다.");
-          router.replace(`/orders/${order.email}`); 
-        }).catch((err) => {
-          console.error("삭제 실패:", err);
-          alert("주문 취소 중 오류가 발생했습니다.");
-        });
+        })
+          .then((data) => {
+            Swal.fire({
+              title: "취소 완료",
+              text: data.msg || "주문이 정상적으로 취소되었습니다.",
+              icon: "success",
+              confirmButtonColor: "#3b82f6",
+            }).then(() => {
+              router.replace(`/orders/${order.email}`);
+            });
+          })
+          .catch((err) => {
+            console.error("삭제 실패:", err);
+            Swal.fire({
+              title: "오류 발생",
+              text: "주문 취소 중 오류가 발생했습니다. 다시 시도해주세요.",
+              icon: "error",
+              confirmButtonColor: "#ef4444",
+            });
+          });
       }
-      return; 
+      return;
     }
 
     // 2. 새로운 총액 계산
     const newTotalPrice = updatedProducts.reduce(
-      (sum, p) => sum + p.price * p.quantity, 
+      (sum, p) => sum + p.price * p.quantity,
       0
     );
 
@@ -68,7 +106,9 @@ export default function Page({ params }: { params: Promise<{ orderId: string }> 
     return (
       <div className="flex justify-center items-center min-h-screen">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-        <span className="ml-3 text-lg font-medium">주문 정보를 불러오는 중...</span>
+        <span className="ml-3 text-lg font-medium">
+          주문 정보를 불러오는 중...
+        </span>
       </div>
     );
   }
@@ -76,7 +116,9 @@ export default function Page({ params }: { params: Promise<{ orderId: string }> 
   if (!order) {
     return (
       <main className="max-w-2xl mx-auto mt-10 p-6 bg-red-50 rounded-lg border border-red-200 text-center">
-        <h1 className="text-2xl font-bold text-red-600 mb-2">주문 번호 {orderId}</h1>
+        <h1 className="text-2xl font-bold text-red-600 mb-2">
+          주문 번호 {orderId}
+        </h1>
         <p className="text-gray-600">주문 상세 정보를 찾을 수 없습니다.</p>
       </main>
     );
@@ -84,33 +126,100 @@ export default function Page({ params }: { params: Promise<{ orderId: string }> 
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!order) return;
+
     const form = e.currentTarget;
-    const address = (form.elements.namedItem("address") as HTMLInputElement).value.trim();
-    const zipCode = (form.elements.namedItem("zipCode") as HTMLInputElement).value.trim();
+    const address = (
+      form.elements.namedItem("address") as HTMLInputElement
+    ).value.trim();
+    const zipCode = (
+      form.elements.namedItem("zipCode") as HTMLInputElement
+    ).value.trim();
 
     if (!address || !zipCode) {
-      alert("모든 필드를 입력해주세요.");
+      Swal.fire({
+        title: "입력 오류",
+        text: "배송 주소와 우편번호를 모두 입력해주세요.",
+        icon: "warning",
+        confirmButtonColor: "#f59e0b",
+        confirmButtonText: "확인",
+      });
       return;
     }
 
-    apiFetch(`/api/v1/order/${orderId}?email=${order.email}`, {
-      method: "PUT",
-      body: JSON.stringify({
-        address,
-        zipCode,
-        products: order.products,
-      }),
-    }).then((data) => {
-      alert(data.msg || "수정이 완료되었습니다.");
-      router.replace(`/orders/${order.email}/${orderId}`);
-    });
+    // 4. 현재 수량과 초기 수량을 비교하는 로직
+    // - 상품 개수가 달라졌거나 (삭제된 경우)
+    // - 각 상품의 productId를 찾아 수량이 하나라도 다른지 확인
+    const isQuantityChanged =
+      order.products.length !== initialProductsRef.current.length ||
+      order.products.some((p) => {
+        const initial = initialProductsRef.current.find(
+          (i) => i.productId === p.productId
+        );
+        return initial ? initial.quantity !== p.quantity : true;
+      });
+
+    const proceedUpdate = () => {
+      apiFetch(`/api/v1/order/${orderId}?email=${order.email}`, {
+        method: "PUT",
+        body: JSON.stringify({
+          address,
+          zipCode,
+          products: order.products,
+        }),
+      })
+        .then((data) => {
+          // 1. 수정 완료 알림 (성공 아이콘)
+          Swal.fire({
+            title: "수정 완료",
+            text: data.msg || "주문 수정이 정상적으로 완료되었습니다.",
+            icon: "success",
+            confirmButtonColor: "#3b82f6",
+          }).then(() => {
+            // 사용자가 확인을 누르면 페이지 이동
+            router.replace(`/orders/${order.email}/${orderId}`);
+          });
+        })
+        .catch((err) => {
+          Swal.fire({
+            title: "오류 발생",
+            text: "수정 중 문제가 발생했습니다. 다시 시도해주세요.",
+            icon: "error",
+            confirmButtonColor: "#ef4444",
+          });
+        });
+    };
+
+    // 5. 조건부 모달 실행: 수량이 실제로 변했을 때만 confirm 실행
+    if (isQuantityChanged) {
+      Swal.fire({
+        title: "재결제 진행 안내",
+        text: "상품 수량이 변경되어 재결제가 진행됩니다. 계속하시겠습니까?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "네, 진행합니다",
+        cancelButtonText: "취소",
+        confirmButtonColor: "#3b82f6",
+        cancelButtonColor: "#94a3b8",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          proceedUpdate();
+        }
+      });
+    } else {
+      // 수량 변경이 없는 경우 바로 업데이트 실행
+      proceedUpdate();
+    }
   };
 
   return (
     <main className="max-w-3xl mx-auto py-10 px-4">
       <div className="bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-100">
         <div className="bg-gray-50 border-b p-6">
-          <h1 className="text-2xl font-bold text-gray-800"> {orderId}번 주문 수정하기</h1>
+          <h1 className="text-2xl font-bold text-gray-800">
+            {" "}
+            {orderId}번 주문 수정하기
+          </h1>
         </div>
 
         <div className="p-6 space-y-8">
@@ -122,10 +231,17 @@ export default function Page({ params }: { params: Promise<{ orderId: string }> 
             <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
               <ul className="divide-y divide-gray-200">
                 {order.products.map((product: OrderProductDto) => (
-                  <li key={product.productId} className="py-4 flex justify-between items-center">
+                  <li
+                    key={product.productId}
+                    className="py-4 flex justify-between items-center"
+                  >
                     <div className="flex flex-col">
-                      <span className="font-medium text-gray-800">{product.productName}</span>
-                      <span className="text-sm text-gray-500">{formatWon(product.price)}원</span>
+                      <span className="font-medium text-gray-800">
+                        {product.productName}
+                      </span>
+                      <span className="text-sm text-gray-500">
+                        {formatWon(product.price)}원
+                      </span>
                     </div>
 
                     {/* --- 수량 조절 +,- 버튼 --- */}
@@ -157,9 +273,11 @@ export default function Page({ params }: { params: Promise<{ orderId: string }> 
                   </li>
                 ))}
               </ul>
-              
+
               <div className="mt-4 pt-4 border-t border-gray-200 flex justify-between items-center">
-                <span className="text-lg font-bold text-gray-900">총 결제 금액</span>
+                <span className="text-lg font-bold text-gray-900">
+                  총 결제 금액
+                </span>
                 <span className="text-2xl font-extrabold text-blue-600">
                   {formatWon(order.totalPrice)}원
                 </span>
@@ -175,7 +293,9 @@ export default function Page({ params }: { params: Promise<{ orderId: string }> 
             </h2>
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-600 ml-1">배송 주소</label>
+                <label className="text-sm font-medium text-gray-600 ml-1">
+                  배송 주소
+                </label>
                 <input
                   className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
                   type="text"
@@ -186,7 +306,9 @@ export default function Page({ params }: { params: Promise<{ orderId: string }> 
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-600 ml-1">우편번호</label>
+                <label className="text-sm font-medium text-gray-600 ml-1">
+                  우편번호
+                </label>
                 <input
                   className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
                   type="text"

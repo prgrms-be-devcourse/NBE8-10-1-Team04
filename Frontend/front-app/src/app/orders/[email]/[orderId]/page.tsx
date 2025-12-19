@@ -1,5 +1,6 @@
 "use client";
 
+import Swal from "sweetalert2";
 import { use, useEffect, useState } from "react";
 import { apiFetch } from "@/lib/backend/client";
 import { OrderResponseDto } from "@/type/orderResponse";
@@ -8,19 +9,22 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { formatWon } from "@/lib/frontend/tools";
 
-export default function Page({ params }: { params: Promise<{ orderId: string }> }) {
+export default function Page({
+  params,
+}: {
+  params: Promise<{ orderId: string }>;
+}) {
   const [order, setOrder] = useState<OrderResponseDto | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { orderId } = use(params);
   const router = useRouter();
 
   const DELIVERY_STATUS_MAP: Record<string, string> = {
-    "CONFIRM": "주문 확인",
-    "READY": "배송 준비 중",
-    "SHIPPING": "배송 중",
-    "DELIVERED": "배송 완료",
+    CONFIRM: "주문 확인",
+    READY: "배송 준비 중",
+    SHIPPING: "배송 중",
+    DELIVERED: "배송 완료",
   };
-
 
   const STATUS_STYLE_MAP: Record<string, string> = {
     CONFIRM: "bg-gray-200 text-gray-800",
@@ -30,13 +34,31 @@ export default function Page({ params }: { params: Promise<{ orderId: string }> 
   };
 
   const deletePost = (id: string) => {
-    if (!order) { return}
+    if (!order) {
+      return;
+    }
     apiFetch(`/api/v1/order/${id}`, {
       method: "DELETE",
-    }).then((data) => {
-      alert(data.msg || "주문이 취소되었습니다.");
-      router.replace(`/orders/${order.email}`);
-    });
+    })
+      .then((data) => {
+        Swal.fire({
+          title: "취소 완료",
+          text: data.msg || "주문이 정상적으로 취소되었습니다.",
+          icon: "success",
+          confirmButtonColor: "#3b82f6",
+        }).then(() => {
+          router.replace(`/orders/${order.email}`);
+        });
+      })
+      .catch((err) => {
+        console.error("삭제 실패:", err);
+        Swal.fire({
+          title: "오류 발생",
+          text: "주문 취소 중 오류가 발생했습니다. 다시 시도해주세요.",
+          icon: "error",
+          confirmButtonColor: "#ef4444",
+        });
+      });
   };
 
   useEffect(() => {
@@ -57,11 +79,12 @@ export default function Page({ params }: { params: Promise<{ orderId: string }> 
   if (!order) {
     return (
       <main className="max-w-2xl mx-auto mt-10 p-6 text-center bg-red-50 rounded-lg border border-red-200">
-        <h1 className="text-xl font-bold text-red-600">주문을 찾을 수 없습니다.</h1>
+        <h1 className="text-xl font-bold text-red-600">
+          주문을 찾을 수 없습니다.
+        </h1>
       </main>
     );
   }
-
 
   return (
     <main className="max-w-3xl mx-auto py-10 px-4">
@@ -69,9 +92,15 @@ export default function Page({ params }: { params: Promise<{ orderId: string }> 
         {/* 헤더 섹션 */}
         <div className="bg-gray-50 border-b p-6 flex justify-between items-center">
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">{orderId}번 주문 상세</h1>
+            <h1 className="text-2xl font-bold text-gray-800">
+              {orderId}번 주문 상세
+            </h1>
           </div>
-          <span className={`px-4 py-1.5 rounded-full text-sm font-bold ${STATUS_STYLE_MAP[order.deliveryStatus]}`}>
+          <span
+            className={`px-4 py-1.5 rounded-full text-sm font-bold ${
+              STATUS_STYLE_MAP[order.deliveryStatus]
+            }`}
+          >
             {DELIVERY_STATUS_MAP[order.deliveryStatus]}
           </span>
         </div>
@@ -81,11 +110,15 @@ export default function Page({ params }: { params: Promise<{ orderId: string }> 
           <section className="grid grid-cols-2 gap-4">
             <div className="p-4 bg-blue-50 rounded-xl border border-blue-100">
               <p className="text-sm text-blue-600 font-medium">총 결제 금액</p>
-              <p className="text-2xl font-extrabold text-blue-700">{formatWon(order.totalPrice)}원</p>
+              <p className="text-2xl font-extrabold text-blue-700">
+                {formatWon(order.totalPrice)}원
+              </p>
             </div>
             <div className="p-4 bg-gray-50 rounded-xl border border-gray-100">
               <p className="text-sm text-gray-600 font-medium">배송 예정일</p>
-              <p className="text-xl font-bold text-gray-800">{order.deliveryDate || "미정"}</p>
+              <p className="text-xl font-bold text-gray-800">
+                {order.deliveryDate || "미정"}
+              </p>
             </div>
           </section>
 
@@ -98,12 +131,21 @@ export default function Page({ params }: { params: Promise<{ orderId: string }> 
             <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
               <ul className="divide-y divide-gray-200">
                 {order.products.map((product: OrderProductDto) => (
-                  <li key={product.productId} className="py-4 flex justify-between items-center">
+                  <li
+                    key={product.productId}
+                    className="py-4 flex justify-between items-center"
+                  >
                     <div className="flex flex-col">
-                      <span className="font-medium text-gray-800">{product.productName}</span>
-                      <span className="text-sm text-gray-500">수량: {product.quantity}개</span>
+                      <span className="font-medium text-gray-800">
+                        {product.productName}
+                      </span>
+                      <span className="text-sm text-gray-500">
+                        수량: {product.quantity}개
+                      </span>
                     </div>
-                    <span className="font-semibold text-gray-700">{formatWon(product.price * product.quantity)}원</span>
+                    <span className="font-semibold text-gray-700">
+                      {formatWon(product.price * product.quantity)}원
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -117,33 +159,61 @@ export default function Page({ params }: { params: Promise<{ orderId: string }> 
               배송지 정보
             </h2>
             <div className="p-4 border border-gray-200 rounded-xl space-y-2">
-              <p className="text-gray-800"><span className="font-medium text-gray-500 mr-2">주소:</span> {order.address || "정보 없음"}</p>
-              <p className="text-gray-800"><span className="font-medium text-gray-500 mr-2">우편번호:</span> {order.zipCode || "정보 없음"}</p>
+              <p className="text-gray-800">
+                <span className="font-medium text-gray-500 mr-2">주소:</span>{" "}
+                {order.address || "정보 없음"}
+              </p>
+              <p className="text-gray-800">
+                <span className="font-medium text-gray-500 mr-2">
+                  우편번호:
+                </span>{" "}
+                {order.zipCode || "정보 없음"}
+              </p>
             </div>
           </section>
 
           {/* 하단 버튼 액션: 배송 완료(DELIVERED)가 아닐 때만 표시 */}
-            {order.deliveryStatus == "CONFIRM" && (
+          {order.deliveryStatus == "CONFIRM" && (
             <div className="flex gap-3 pt-6 border-t border-gray-100">
-                <button
-                onClick={() => confirm(`${orderId}번 주문을 취소하시겠습니까?`) && deletePost(orderId)}
+              <button
+                type="button"
+                onClick={async () => {
+                  const result = await Swal.fire({
+                    title: `${orderId}번 주문을 취소하시겠습니까?`,
+                    text: "취소된 주문은 되돌릴 수 없습니다.",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "네, 취소합니다",
+                    cancelButtonText: "아니오",
+                    confirmButtonColor: "#ef4444",
+                    cancelButtonColor: "#94a3b8",
+                  });
+
+                  if (result.isConfirmed) {
+                    // 사용자가 '네'를 눌렀을 때만 실행
+                    deletePost(orderId);
+                  }
+                }}
                 className="flex-1 px-4 py-3 border border-red-200 text-red-600 rounded-lg hover:bg-red-50 font-medium transition-colors"
-                >
-                주문 취소하기
-                </button>
-                <Link
+              >
+                주문 취소
+              </button>
+              <Link
                 href={`${orderId}/edit`}
                 className="flex-[2] px-4 py-3 bg-gray-800 text-white text-center rounded-lg hover:bg-gray-900 font-bold shadow-lg transition-all active:scale-[0.98]"
-                >
+              >
                 주문 정보 수정
-                </Link>
+              </Link>
             </div>
-            )}
+          )}
         </div>
       </div>
-      
+
       <div className="mt-6 text-center">
-        <button onClick={() => router.push(`/orders/${order.email}`)} className="text-gray-400 hover:text-gray-600 text-sm underline underline-offset-4">
+        <button
+          onClick={() => router.push(`/orders/${order.email}`)}
+          className="text-gray-400 hover:text-gray-600 text-sm underline underline-offset-4"
+        >
           전체 주문 목록으로 돌아가기
         </button>
       </div>
