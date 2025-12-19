@@ -1,5 +1,6 @@
 "use client";
 
+import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -21,7 +22,11 @@ export default function AuthButtons() {
   const handleLogout = () => {
     localStorage.removeItem("adminLoggedIn");
     localStorage.removeItem("adminName");
-    alert("로그아웃 되었습니다");
+    Swal.fire({
+      text: "로그아웃 되었습니다.",
+      icon: "success",
+      confirmButtonColor: "#3b82f6",
+    })
     setIsLogin(false);
     router.push("/");
   };

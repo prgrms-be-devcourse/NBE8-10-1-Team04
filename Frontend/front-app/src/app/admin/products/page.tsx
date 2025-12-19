@@ -1,5 +1,6 @@
 "use client";
 
+import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import { ProductDto } from "@/type/product";
 import { apiFetch } from "@/lib/backend/client";
@@ -20,7 +21,15 @@ export default function Home() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm("정말 삭제할까요?")) return;
+    const result = await Swal.fire({
+        text: "정말 삭제할까요",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "네, 삭제합니다",
+        cancelButtonText: "아니오",
+        confirmButtonColor: "#ef4444", 
+      });
+    if (!result.isConfirmed) return;
 
     try {
       await apiFetch(`/api/v1/product/${id}`, { method: "DELETE" });

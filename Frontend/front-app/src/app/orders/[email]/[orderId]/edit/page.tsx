@@ -58,7 +58,7 @@ export default function Page({
         showCancelButton: true,
         confirmButtonText: "네, 삭제합니다",
         cancelButtonText: "아니오",
-        confirmButtonColor: "#ef4444", // red-500
+        confirmButtonColor: "#ef4444", 
       });
       if (result.isConfirmed) {
         // 주문 취소 API 호출
