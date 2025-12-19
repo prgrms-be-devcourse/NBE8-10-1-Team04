@@ -24,14 +24,15 @@
     <td> <strong>Backend</strong>: 상품 추가 기능 구현<br> <strong>Frontend</strong>: 상품 주문 페이지 구현, UI 전반 통합 </td>
   </tr>
   <tr>
+  <td align="center"> <a href="https://github.com/kimhss"> <img src="https://avatars.githubusercontent.com/u/127471807?v=4" width="80"><br> <strong>김현수</strong> </a> </td>
+    <td align="center">팀원</td>
+    <td> <strong>Backend</strong>: 주문 생성·삭제, 단건/다건 조회, 배송 상태 변경 기능 구현<br> <strong>Frontend</strong>: 관리자 주문 관리 페이지 연동 및 구현 </td>
+    
+  </tr>
+  <tr>
     <td align="center"> <a href="https://github.com/BaekRaven"> <img src="https://avatars.githubusercontent.com/u/58510698?v=4" width="80"><br> <strong>유재원</strong> </a> </td>
     <td align="center">팀원</td>
     <td> <strong>Backend</strong>: 상품 조회·수정·삭제 기능 구현<br> <strong>Frontend</strong>: 주문 조회 기능 프론트엔드 연동 </td>
-  </tr>
-  <tr>
-    <td align="center"> <a href="https://github.com/kimhss"> <img src="https://avatars.githubusercontent.com/u/127471807?v=4" width="80"><br> <strong>김현수</strong> </a> </td>
-    <td align="center">팀원</td>
-    <td> <strong>Backend</strong>: 주문 생성·삭제, 단건/다건 조회, 배송 상태 변경 기능 구현<br> <strong>Frontend</strong>: 관리자 주문 관리 페이지 연동 및 구현 </td>
   </tr>
   <tr>
     <td align="center"> <a href="https://github.com/inhj1223"> <img src="https://avatars.githubusercontent.com/u/29454099?v=4" width="80"><br> <strong>장인호</strong> </a> </td>
