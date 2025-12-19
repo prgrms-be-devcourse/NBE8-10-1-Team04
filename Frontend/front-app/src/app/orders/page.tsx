@@ -19,6 +19,8 @@ export default function Home() {
         icon: "warning",
         confirmButtonColor: "#f59e0b",
         confirmButtonText: "확인",
+        heightAuto: false,
+        backdrop: true,
       });
       return;
     }

@@ -27,6 +27,8 @@ export default function Home() {
           icon: "warning",
           confirmButtonColor: "#f59e0b",
           confirmButtonText: "확인",
+          heightAuto: false,
+          backdrop: true,
         });
         return;
       }
@@ -36,6 +38,8 @@ export default function Home() {
           icon: "warning",
           confirmButtonColor: "#f59e0b",
           confirmButtonText: "확인",
+          heightAuto: false,
+          backdrop: true,
         });
         return;
       }
@@ -45,6 +49,8 @@ export default function Home() {
           icon: "warning",
           confirmButtonColor: "#f59e0b",
           confirmButtonText: "확인",
+          heightAuto: false,
+          backdrop: true,
         });
         return;
       }
@@ -66,6 +72,8 @@ export default function Home() {
           text: "상품이 성공적으로 생성되었습니다.",
           icon: "success",
           confirmButtonColor: "#3b82f6",
+          heightAuto: false,
+          backdrop: true,
         })
         router.push("/admin/products");
       } catch (err) {
@@ -75,6 +83,8 @@ export default function Home() {
           text: "상품 생성에 실패했습니다.",
           icon: "error",
           confirmButtonColor: "#ef4444",
+          heightAuto: false,
+          backdrop: true,
         });
       } finally {
         setIsSubmitting(false);
