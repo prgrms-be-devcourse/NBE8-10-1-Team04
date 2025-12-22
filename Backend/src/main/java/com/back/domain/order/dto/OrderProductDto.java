@@ -4,6 +4,8 @@ import com.back.domain.order.entity.OrderProduct;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
 public class OrderProductDto {
@@ -16,7 +18,7 @@ public class OrderProductDto {
     public OrderProductDto(OrderProduct op) {
         this.productId = op.getProduct().getId();
         this.productName = op.getProduct().getName();
-        this.price = op.getProduct().getPrice();
+        this.price = op.getPrice();
         this.quantity = op.getQuantity();
     }
 }

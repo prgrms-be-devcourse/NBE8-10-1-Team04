@@ -42,8 +42,8 @@ public class BaseInitData {
     @Transactional
     public void work1() {
         if (productService.count() > 0) return;
-        productService.create("갤럭시", 1000, "삼성껍니다.", "https://i.postimg.cc/NMRCL4Rs/image.png");
-        productService.create("아이폰", 5000, "애플껍니다.", "https://i.postimg.cc/NMRCL4Rs/image.png");
+//        productService.create("갤럭시", 1000, "삼성껍니다.", "https://i.postimg.cc/NMRCL4Rs/image.png");
+//        productService.create("아이폰", 5000, "애플껍니다.", "https://i.postimg.cc/NMRCL4Rs/image.png");
     }
     @PostConstruct
     @Transactional
@@ -53,10 +53,38 @@ public class BaseInitData {
             return; // 이미 데이터 있으면 다시 안 넣음
         }
 
-        Product product1 = new Product("아메리카노", 4500, "맛있어요", "https://i.postimg.cc/NMRCL4Rs/image.png");
-        Product product2 = new Product("카페라떼", 5000, "산미있는 맛", "https://i.postimg.cc/NMRCL4Rs/image.png");
+        Product product1 = new Product(
+                "에티오피아 예가체프",
+                4800,
+                "플로럴한 향과 밝은 산미가 특징인 싱글 오리진 원두",
+                "https://m.coffeegdero.com/web/product/big/202309/09feed832905ef19a19c39ebc42543c2.jpg"
+        );
+
+        Product product2 = new Product(
+                "콜롬비아 수프리모",
+                4500,
+                "부드러운 바디감과 균형 잡힌 산미를 가진 대중적인 원두",
+                "https://m.coffeegdero.com/web/product/medium/202309/eab59889cdd5160a20d6c3ec3d775f18.jpg"
+        );
+
+        Product product3 = new Product(
+                "과테말라 안티구아",
+                5000,
+                "초콜릿과 스모키한 풍미가 어우러진 깊은 맛의 원두",
+                "https://m.coffeegdero.com/web/product/medium/202309/94b86104f7ff5939abf636c6c7c1a14d.jpg"
+        );
+
+        Product product4 = new Product(
+                "브라질 산토스",
+                4300,
+                "고소한 너트 향과 낮은 산미로 데일리로 즐기기 좋은 원두",
+                "https://m.coffeegdero.com/web/product/medium/202309/8775e52e29f0bf518529807bdce089c3.jpg"
+        );
+
         productRepository.save(product1);
         productRepository.save(product2);
+        productRepository.save(product3);
+        productRepository.save(product4);
 
         Order order1 = new Order("서울시 강남구", "12345", "user1@test.com", LocalDate.now());
         Order order2 = new Order("서울시 서초구", "54321", "user2@test.com", LocalDate.now());
@@ -64,13 +92,13 @@ public class BaseInitData {
 
 
         order1.addOrderProduct(new OrderProduct(product1, product1.getPrice(), 2));
-        order1.addOrderProduct(new OrderProduct(product2, product2.getPrice(), 3));
+        order1.addOrderProduct(new OrderProduct(product2, product2.getPrice(), 5));
 
-        order2.addOrderProduct(new OrderProduct(product1, product1.getPrice(), 2));
-        order2.addOrderProduct(new OrderProduct(product2, product2.getPrice(), 3));
+        order2.addOrderProduct(new OrderProduct(product2, product1.getPrice(), 1));
+        order2.addOrderProduct(new OrderProduct(product3, product2.getPrice(), 3));
 
-        order3.addOrderProduct(new OrderProduct(product1, product1.getPrice(), 2));
-        order3.addOrderProduct(new OrderProduct(product2, product2.getPrice(), 3));
+        order3.addOrderProduct(new OrderProduct(product2, product1.getPrice(), 4));
+        order3.addOrderProduct(new OrderProduct(product4, product2.getPrice(), 4));
 
 
         orderRepository.save(order1);

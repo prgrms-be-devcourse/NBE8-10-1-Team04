@@ -1,5 +1,6 @@
 "use client";
 
+import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 import { useState, useCallback } from "react";
 import { apiFetch } from "@/lib/backend/client";
@@ -21,15 +22,36 @@ export default function Home() {
       const numericPrice = Number(price);
 
       if (!trimmedName) {
-        alert("상품명을 입력해주세요.");
+        Swal.fire({
+          text: "상품명을 입력해주세요.",
+          icon: "warning",
+          confirmButtonColor: "#f59e0b",
+          confirmButtonText: "확인",
+          heightAuto: false,
+          backdrop: true,
+        });
         return;
       }
       if (numericPrice <= 0 || isNaN(numericPrice)) {
-        alert("가격을 올바르게 입력해주세요.");
+        Swal.fire({
+          text: "가격을 올바르게 입력해주세요.",
+          icon: "warning",
+          confirmButtonColor: "#f59e0b",
+          confirmButtonText: "확인",
+          heightAuto: false,
+          backdrop: true,
+        });
         return;
       }
       if (trimmedDescription.length < 2) {
-        alert("설명을 2자 이상 입력해주세요.");
+        Swal.fire({
+          text: "설명을 2자 이상 입력해주세요.",
+          icon: "warning",
+          confirmButtonColor: "#f59e0b",
+          confirmButtonText: "확인",
+          heightAuto: false,
+          backdrop: true,
+        });
         return;
       }
 
@@ -45,11 +67,25 @@ export default function Home() {
             imageUrl: imageUrl || null,
           }),
         });
-        alert("상품이 성공적으로 생성되었습니다.");
+        Swal.fire({
+          title: "상품 생성 완료",
+          text: "상품이 성공적으로 생성되었습니다.",
+          icon: "success",
+          confirmButtonColor: "#3b82f6",
+          heightAuto: false,
+          backdrop: true,
+        })
         router.push("/admin/products");
       } catch (err) {
         console.error("상품 생성 실패:", err);
-        alert("상품 생성에 실패했습니다.");
+        Swal.fire({
+          title: "오류 발생",
+          text: "상품 생성에 실패했습니다.",
+          icon: "error",
+          confirmButtonColor: "#ef4444",
+          heightAuto: false,
+          backdrop: true,
+        });
       } finally {
         setIsSubmitting(false);
       }
@@ -88,7 +124,7 @@ export default function Home() {
               placeholder="https://example.com/image.jpg"
               value={imageUrl}
               onChange={(e) => setImageUrl(e.target.value)}
-              className="w-full border px-3 py-2 rounded"
+              className="w-full border border-gray-300 px-3 py-2 rounded"
             />{" "}
           </div>
           {/* 가격 */}
@@ -137,7 +173,7 @@ export default function Home() {
       </div>
 
       {/* 하단 버튼 */}
-      <div className="flex justify-center gap-10 mt-50">
+      <div className="flex justify-center gap-5 mt-20">
         <button
           type="button"
           onClick={() => router.push("/admin/products")}

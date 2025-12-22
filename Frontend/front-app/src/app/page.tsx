@@ -1,5 +1,6 @@
 "use client";
 
+import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { ProductDto } from "@/type/product";
@@ -85,7 +86,14 @@ export default function Home() {
   const handleCheckout = async () => {
     const error = validateCheckout();
     if (error) {
-      alert(error);
+      Swal.fire({
+        text: error,
+        icon: "warning",
+        confirmButtonColor: "#f59e0b",
+        confirmButtonText: "확인",
+        heightAuto: false,
+        backdrop: true,
+      });
       return;
     }
     const payload = {
@@ -106,10 +114,24 @@ export default function Home() {
 
       console.log("order result:", res);
       setCart({});
-      alert("주문이 완료되었습니다.");
+      Swal.fire({
+        title: "주문 성공",
+        text: "주문이 완료되었습니다.",
+        icon: "success",
+        confirmButtonColor: "#3b82f6",
+        heightAuto: false,
+        backdrop: true,
+      })
     } catch (e) {
       console.error(e);
-      alert("주문 처리 중 오류가 발생했습니다.");
+      Swal.fire({
+        title: "오류 발생",
+        text: "주문 처리 중 오류가 발생했습니다.",
+        icon: "error",
+        confirmButtonColor: "#ef4444",
+        heightAuto: false,
+        backdrop: true,
+      });
     }
   };
 

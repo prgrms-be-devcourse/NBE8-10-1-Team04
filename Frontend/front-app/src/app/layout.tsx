@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
+import AuthButtons from "@/components/AuthButtons";
+import AuthGuard from "@/components/AuthGuard";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,20 +34,28 @@ export default function RootLayout({
           href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css"
         />
       </head>
-      <body className="antialiased bg-gray-300 h-screen overflow-hidden flex flex-col">
-        <header className="pt-10 pb-6 text-center">
-          <Link href="/" className="inline-block">
-            <h1 className="text-4xl font-bold tracking-tight">
-              백(BACK) 다방
-            </h1>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-300 h-screen overflow-hidden flex flex-col`}
+      >
+        {/* 헤더 영역 */}
+        <header className="relative pt-10 pb-6 text-center">
+          <Link href="/" className="inline-block mb-4">
+            <h1 className="text-4xl font-bold tracking-tight">백(BACK) 다방</h1>
           </Link>
+
+          {/* 네비게이션 바 */}
           <NavBar />
+
+          <div className="absolute top-5 right-5 flex items-center justify-end min-w-[150px]">
+            <AuthButtons />
+          </div>
         </header>
 
+        {/* 메인 콘텐츠 영역 */}
         <main className="mx-auto max-w-6xl px-6 pb-8 flex-1 w-full overflow-hidden">
-          <div className="bg-white rounded-2xl shadow-xl/30 overflow-hidden h-full flex">
+          <div className="bg-white rounded-2xl shadow-xl overflow-hidden h-full flex">
             <div className="overflow-y-auto p-5 flex-1">
-              {children}
+              <AuthGuard>{children}</AuthGuard>
             </div>
           </div>
         </main>

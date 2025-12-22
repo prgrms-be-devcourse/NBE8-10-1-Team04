@@ -60,7 +60,7 @@ public class ApiV1ProductController {
                 new ProductDto(product)
         );
     }
-    @DeleteMapping("product/{id}")
+    @DeleteMapping("/product/{id}")
     @Transactional
     public RsData<Void> delete(@PathVariable int id) {
         Product product = productService.findById(id).get();
@@ -69,10 +69,10 @@ public class ApiV1ProductController {
 
         return new RsData<>(
                 "200-1",
-                "%s 상품이 삭제되었습니다.".formatted(product.getName())
+                "%s 상품이 삭제 처리되었습니다.".formatted(product.getName())
         );
     }
-    @PutMapping("product/{id}")
+    @PutMapping("/product/{id}")
     @Transactional
     public RsData<Void> modify(@PathVariable int id,@RequestBody @Valid ProductCreateReq req){
         Product product = productService.findById(id).get();

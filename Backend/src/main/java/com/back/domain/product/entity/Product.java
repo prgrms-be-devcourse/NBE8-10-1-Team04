@@ -2,11 +2,11 @@ package com.back.domain.product.entity;
 
 import com.back.global.jpa.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 @Entity
 @Getter
+@AllArgsConstructor
 @Builder
 public class Product extends BaseEntity {
     @Column(nullable = false, length = 50)
@@ -24,11 +24,19 @@ public class Product extends BaseEntity {
     @Column(length = 300)
     private String imageUrl;
 
+    @Column(nullable = false)
+    private boolean deleted;
+
+    public void delete() {
+        this.deleted = true;
+    }
+
     public Product(String name, int price, String description, String imageUrl) {
         this.name = name;
         this.price = price;
         this.description = description;
         this.imageUrl = imageUrl;
+        this.deleted = false;
 
     }
 

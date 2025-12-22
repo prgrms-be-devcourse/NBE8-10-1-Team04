@@ -1,5 +1,6 @@
 "use client";
 
+import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import { ProductDto } from "@/type/product";
 import { apiFetch } from "@/lib/backend/client";
@@ -20,7 +21,17 @@ export default function Home() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm("정말 삭제할까요?")) return;
+    const result = await Swal.fire({
+        text: "정말 삭제할까요",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "네, 삭제합니다",
+        cancelButtonText: "아니오",
+        confirmButtonColor: "#ef4444", 
+        heightAuto: false,
+        backdrop: true,
+      });
+    if (!result.isConfirmed) return;
 
     try {
       await apiFetch(`/api/v1/product/${id}`, { method: "DELETE" });
@@ -35,11 +46,10 @@ export default function Home() {
   }, []);
 
   return (
-    <div>
-      <div className="mx-auto max-w-6xl px-4 py-4">
-        <h2 className="text-2xl font-bold">상품 목록</h2>
+      <div className="flex flex-col h-full mx-auto max-w-6xl px-4 py-4">
+        <h2 className="text-2xl font-bold flex-shrink-0">상품 목록</h2>
         {/* 상품 목록*/}
-        <div className="mt-6 space-y-4 my-4">
+        <div className="flex-1 overflow-y-auto space-y-3 mt-6 space-y-4 my-4">
           {products.length === 0 && (
             <p className="text-center text-gray-500">등록된 상품이 없습니다.</p>
           )}
@@ -100,15 +110,13 @@ export default function Home() {
             </div>
           ))}
         </div>
-        <div className="border-t p-4">
-          <Link
+        <hr className="border-1 border-gray-200 my-5"></hr>
+        <Link
             href="/admin/products/create"
-            className="block w-full border rounded py-2 text-center text-lg hover:bg-gray-100"
+            className="block w-full border-2 border-gray-300 rounded py-2 text-center text-lg hover:bg-gray-100"
           >
-            +
-          </Link>
-        </div>
+            +  
+        </Link>
       </div>
-    </div>
   );
 }

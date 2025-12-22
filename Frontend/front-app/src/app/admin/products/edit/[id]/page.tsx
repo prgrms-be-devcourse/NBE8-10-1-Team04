@@ -1,5 +1,6 @@
 "use client";
 
+import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { apiFetch } from "@/lib/backend/client";
@@ -9,6 +10,7 @@ interface ProductDto {
   name: string;
   price: number;
   description: string;
+  imageUrl: string;
 }
 
 export default function EditProductPage() {
@@ -30,6 +32,7 @@ export default function EditProductPage() {
       setName(data.name);
       setPrice(data.price);
       setDescription(data.description);
+      setImageUrl(data.imageUrl);
     };
 
     loadProduct();
@@ -39,7 +42,14 @@ export default function EditProductPage() {
     e.preventDefault();
 
     if (!name.trim() || price === "" || price <= 0 || !description.trim()) {
-      alert("모든 항목을 입력해주세요.");
+      Swal.fire({
+        text: "모든 항목을 입력해주세요.",
+        icon: "warning",
+        confirmButtonColor: "#f59e0b",
+        confirmButtonText: "확인",
+        heightAuto: false,
+        backdrop: true,
+      });
       return;
     }
 
@@ -50,7 +60,14 @@ export default function EditProductPage() {
         method: "PUT",
         body: JSON.stringify({ name, price, description, imageUrl }),
       });
-      alert("상품이 수정되었습니다.");
+      Swal.fire({
+        title: "상품 수정 완료",
+        text: "상품이 수정되었습니다.",
+        icon: "success",
+        confirmButtonColor: "#3b82f6",
+        heightAuto: false,
+        backdrop: true,
+      })
       router.push("/admin/products");
     } finally {
       setIsSubmitting(false);
@@ -87,7 +104,7 @@ export default function EditProductPage() {
               placeholder="https://example.com/image.jpg"
               value={imageUrl}
               onChange={(e) => setImageUrl(e.target.value)}
-              className="w-full border px-3 py-2 rounded"
+              className="w-full border border-gray-300 px-3 py-2 rounded"
             />{" "}
           </div>
           {/* 가격 */}
@@ -101,7 +118,7 @@ export default function EditProductPage() {
               onChange={(e) =>
                 setPrice(Number(e.target.value.replace(/[^0-9]/g, "")))
               }
-              className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 outline-none focus:border-gray-600"
+              className="w-full border border-gray-300 px-3 py-2 rounded"
             />
           </div>
         </div>
@@ -116,7 +133,7 @@ export default function EditProductPage() {
               placeholder="예) 아라비카 (원두커피용)"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 outline-none focus:border-gray-600"
+              className="w-full border border-gray-300 px-3 py-2 rounded bg-white-200"
             />
           </div>
 
@@ -127,14 +144,14 @@ export default function EditProductPage() {
               value={description}
               placeholder="예) 산미가 강하고 꽃향기가 남"
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full h-full rounded-md border border-gray-300 bg-white px-3 py-2  outline-none focus:border-gray-600 resize-none"
+              className="w-full h-full border border-gray-300 px-3 py-2 rounded bg-white-200 resize-none"
             />
           </div>
         </div>
       </div>
 
       {/* 하단 버튼 */}
-      <div className="flex justify-center gap-10 mt-50">
+      <div className="flex justify-center gap-5 mt-20">
         <button
           type="button"
           onClick={() => router.push("/admin/products")}

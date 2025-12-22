@@ -1,4 +1,6 @@
 "use client"
+
+import Swal from "sweetalert2";
 import { apiFetch } from "@/lib/backend/client";
 import { OrderDto } from "@/type/order";
 import { useRouter } from "next/navigation";
@@ -28,7 +30,14 @@ export default function Page() {
                 deliveryStatus: newStatus
             }),
         }).then((data) => {
-            alert(data.msg);
+            Swal.fire({
+                title: "변경 완료",
+                text: data.msg,
+                icon: "success",
+                confirmButtonColor: "#3b82f6",
+                heightAuto: false,
+                backdrop: true,     
+            })
             // 주문 목록 새로고침
             apiFetch('/api/v1/orders').then(setOrders);
         });
